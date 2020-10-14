@@ -1,15 +1,25 @@
 import React from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import "./App.css";
 
-import "./Navbar";
 import Navbar from "./Navbar";
+import Fight from "./Fight";
 import ToonEditor from "./ToonEditor";
+import ToonLister from "./ToonLister";
 
 function App() {
   return (
     <div className="App">
       <Navbar />
-      <ToonEditor />
+      <div className="container">
+        <Switch>
+          <Route path="/my-toon" component={ToonEditor} />
+          <Route path="/all-toons" component={ToonLister} />
+          <Route path="/fight" component={Fight} />
+          <Route path="/" exact component={ToonLister} />
+          <Redirect to="/all-toons" />
+        </Switch>
+      </div>
     </div>
   );
 }
