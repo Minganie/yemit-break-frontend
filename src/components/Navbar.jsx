@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 function Navbar(props) {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link class="navbar-brand" to="/all-toons">
+      <Link className="navbar-brand" to="/all-toons">
         Yemit Break
       </Link>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -28,7 +28,9 @@ function Navbar(props) {
         </ul>
       </div>
       <div>
-        <button className="btn btn-secondary mx-1">Login</button>
+        <Link className="btn btn-secondary mx-1" to="/login">
+          Login
+        </Link>
         <button className="btn btn-secondary mx-1">Logout</button>
       </div>
     </nav>
