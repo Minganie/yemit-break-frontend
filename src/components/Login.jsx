@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import * as yup from "yup";
+import auth from "../services/authService";
 import Input from "./Input";
 
 class Login extends Component {
@@ -18,7 +19,7 @@ class Login extends Component {
     return this.schema
       .validate(this.state, { abortEarly: false })
       .then((valid) => {
-        return null;
+        return {};
       })
       .catch((e) => {
         const errors = {};
@@ -43,8 +44,13 @@ class Login extends Component {
     e.preventDefault();
     const errors = await this.validate();
     this.setState({ errors });
-    if (Object.keys(errors).length > 0) console.log("displaying errors...");
-    else console.log("submitting...");
+    if (Object.keys(errors).length === 0) {
+      const serverSaid = await auth.login(
+        this.state.email,
+        this.state.password
+      );
+      window.location = "/";
+    }
   };
   handleChange = async ({ currentTarget: input }) => {
     const state = { ...this.state };

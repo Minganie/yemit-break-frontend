@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 
-function Navbar(props) {
+function Navbar({ user }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/all-toons">
@@ -28,10 +28,16 @@ function Navbar(props) {
         </ul>
       </div>
       <div>
-        <Link className="btn btn-secondary mx-1" to="/login">
-          Login
-        </Link>
-        <button className="btn btn-secondary mx-1">Logout</button>
+        {!user && (
+          <Link className="btn btn-secondary mx-1" to="/login">
+            Login
+          </Link>
+        )}
+        {user && (
+          <Link className="btn btn-secondary mx-1" to="/logout">
+            Logout
+          </Link>
+        )}
       </div>
     </nav>
   );
