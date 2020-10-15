@@ -33,6 +33,11 @@ function Navbar({ user }) {
             Login
           </Link>
         )}
+        {!user && (
+          <Link className="btn btn-secondary mx-1" to="/register">
+            Register
+          </Link>
+        )}
         {user && (
           <Link className="btn btn-secondary mx-1" to="/logout">
             Logout
