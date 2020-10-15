@@ -1,7 +1,6 @@
 import React from "react";
 import * as yup from "yup";
 import auth from "../services/authService";
-import Input from "./Input";
 import common from "../yemit-break-common/common.json";
 import Form from "./Form";
 
@@ -27,8 +26,11 @@ class Login extends Form {
 
   async doSubmit() {
     if (Object.keys(this.state.errors).length === 0) {
-      await auth.login(this.state.data.email, this.state.data.password);
-      window.location = "/";
+      const logged = await auth.login(
+        this.state.data.email,
+        this.state.data.password
+      );
+      if (logged) window.location = "/";
     }
   }
 

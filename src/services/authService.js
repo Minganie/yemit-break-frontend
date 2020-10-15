@@ -2,24 +2,39 @@ import http from "./httpService";
 import { toast } from "react-toastify";
 import jwtDecode from "jwt-decode";
 
-export async function login(email, password) {
+const key = "token";
+
+export async function register(account) {
   try {
-    const { data } = await http.post("api/users/login", { email, password });
-    localStorage.setItem("token", data.jwt);
+    const { data } = await http.post("api/users", account);
+    localStorage.setItem(key, data.jwt);
     return data;
   } catch (e) {
     const { data } = e.response;
     toast.error(data.message);
+    return false;
+  }
+}
+
+export async function login(email, password) {
+  try {
+    const { data } = await http.post("api/users/login", { email, password });
+    localStorage.setItem(key, data.jwt);
+    return data;
+  } catch (e) {
+    const { data } = e.response;
+    toast.error(data.message);
+    return false;
   }
 }
 
 export function logout() {
-  localStorage.removeItem("token");
+  localStorage.removeItem(key);
 }
 
 export function getCurrentUser() {
   try {
-    const jwt = localStorage.getItem("token");
+    const jwt = localStorage.getItem(key);
     return jwtDecode(jwt);
   } catch (e) {
     return null;
@@ -27,6 +42,7 @@ export function getCurrentUser() {
 }
 
 export default {
+  register,
   login,
   logout,
   getCurrentUser,

@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import auth from "../services/authService";
 import Navbar from "./Navbar";
 import Fight from "./Fight";
+import Register from "./Register";
 import Login from "./Login";
 import Logout from "./Logout";
 import ToonEditor from "./ToonEditor";
@@ -29,6 +30,7 @@ class App extends Component {
             <Route path="/my-toon" component={ToonEditor} />
             <Route path="/all-toons" component={ToonLister} />
             <Route path="/fight" component={Fight} />
+            <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <Route path="/logout" component={Logout} />
             <Route path="/" exact component={ToonLister} />
