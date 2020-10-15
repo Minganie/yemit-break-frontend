@@ -1,0 +1,3 @@
+[submodule "src/yemit-break-common"]
+	path = src/yemit-break-common
+	url = git@github.com:Minganie/yemit-break-common.git

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import * as yup from "yup";
 import auth from "../services/authService";
 import Input from "./Input";
+import common from "../yemit-break-common/common.json";
 
 class Login extends Component {
   state = {
@@ -12,8 +13,18 @@ class Login extends Component {
 
   schema = yup.object().shape({
     email: yup.string().email().required().label("Email"),
-    password: yup.string().required().min(5).max(25).label("Password"),
+    password: yup
+      .string()
+      .matches(
+        new RegExp(common.regexes.password),
+        "Password must be between 5 and 25 characters"
+      )
+      .label("Password"),
   });
+
+  componentDidMount() {
+    console.log(common);
+  }
 
   validate = () => {
     return this.schema
