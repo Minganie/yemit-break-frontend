@@ -13,7 +13,7 @@ function ToonEditor(props) {
   return (
     <form>
       <div className="form-group my-2">
-        <label for={nameId}>Name</label>
+        <label htmlFor={nameId}>Name</label>
         <input
           type="text"
           className="form-control"
@@ -95,7 +95,7 @@ function ToonEditor(props) {
         </div>
       </div>
       <div className="form-group my-2">
-        <label for={traitId}>Trait</label>
+        <label htmlFor={traitId}>Trait</label>
         <select className="form-control" id={traitId} name={traitId}>
           <option>Resonant</option>
           <option>Glass Canon</option>

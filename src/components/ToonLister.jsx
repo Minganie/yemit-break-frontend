@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { Component } from "react";
+import httpService from "../services/httpService";
+import Toon from "./Toon";
 
-function ToonLister(props) {
+class ToonLister extends Component {
+  state = {
+    toons: [],
+  };
+
+  async componentDidMount() {
+    const { data: toons } = await httpService.get("api/toons");
+    this.setState({ toons });
+  }
+
+  render() {
     return (
-        <h1>Here there be toons</h1>
+      <React.Fragment>
+        {this.state.toons.map((toon) => {
+          return <Toon key={toon._id} {...toon} />;
+        })}
+      </React.Fragment>
     );
+  }
 }
 
 export default ToonLister;
