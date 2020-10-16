@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import config from "../config";
 import httpService from "../services/httpService";
 import Toon from "./Toon";
 
@@ -8,7 +9,7 @@ class ToonLister extends Component {
   };
 
   async componentDidMount() {
-    const { data: toons } = await httpService.get("api/toons");
+    const { data: toons } = await httpService.get(config.api + "toons");
     this.setState({ toons });
   }
 
