@@ -24,7 +24,6 @@ class Form extends Component {
   };
 
   validateProperty = (name, value) => {
-    console.log("Form::validateProperty");
     return yup
       .reach(this.schema, name)
       .validate(value)
