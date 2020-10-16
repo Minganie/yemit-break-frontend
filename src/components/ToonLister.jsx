@@ -9,8 +9,15 @@ class ToonLister extends Component {
   };
 
   async componentDidMount() {
-    const { data: toons } = await httpService.get(config.api + "toons");
-    this.setState({ toons });
+    try {
+      const toons = await httpService.get(config.api + "toons");
+      this.setState({ toons });
+    } catch (e) {
+      console.error(
+        "Unexpected error occurred while trying to fetch toon list",
+        e
+      );
+    }
   }
 
   render() {
