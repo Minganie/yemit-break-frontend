@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import config from "../config";
 import httpService from "../services/httpService";
-import Toon from "./Toon";
+import ToonCard from "./ToonCard";
 
 class ToonLister extends Component {
   state = {
@@ -24,7 +24,7 @@ class ToonLister extends Component {
     return (
       <React.Fragment>
         {this.state.toons.map((toon) => {
-          return <Toon key={toon._id} {...toon} />;
+          return <ToonCard key={toon._id} {...toon} />;
         })}
       </React.Fragment>
     );

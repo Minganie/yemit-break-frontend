@@ -1,6 +1,6 @@
 import React from "react";
 
-function ButtonedNumber({ id, label, value, onDecrement, onIncrement, max }) {
+function ButtonedNumber({ id, label, value, onChange, max }) {
   return (
     <div className="field">
       <label className="label" htmlFor={id}>
@@ -13,7 +13,9 @@ function ButtonedNumber({ id, label, value, onDecrement, onIncrement, max }) {
             name={id}
             className="button is-primary"
             disabled={value === 0}
-            onClick={onDecrement}
+            onClick={({ currentTarget: me }) => {
+              onChange(me.name, value - 1);
+            }}
           >
             -
           </button>
@@ -34,7 +36,9 @@ function ButtonedNumber({ id, label, value, onDecrement, onIncrement, max }) {
             name={id}
             className="button is-primary"
             disabled={value === 4 || max === 6}
-            onClick={onIncrement}
+            onClick={({ currentTarget: me }) => {
+              onChange(me.name, value + 1);
+            }}
           >
             +
           </button>

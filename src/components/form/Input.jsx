@@ -9,19 +9,19 @@ class Input extends Component {
     if (this.props.type === "password")
       return (
         <span className="icon is-small is-left">
-          <i className="fas fa-lock"></i>
+          <i className="fas fa-lock" />
         </span>
       );
     if (this.props.name === "email")
       return (
         <span className="icon is-small is-left">
-          <i className="fas fa-envelope"></i>
+          <i className="fas fa-envelope" />
         </span>
       );
     if (this.props.name === "name")
       return (
         <span className="icon is-small is-left">
-          <i className="fas fa-id-card"></i>
+          <i className="fas fa-id-card" />
         </span>
       );
     return null;
@@ -44,10 +44,11 @@ class Input extends Component {
             className="input"
             id={this.props.name}
             name={this.props.name}
-            label={this.props.label}
             value={this.props.value}
             onKeyPress={this.checkChange}
-            onChange={this.props.onChange}
+            onChange={({ currentTarget: me }) => {
+              this.props.onChange(me.name, me.value);
+            }}
             placeholder={this.props.placeholder}
           />
           {this.renderIcons()}

@@ -1,6 +1,6 @@
 import React from "react";
 
-function Toon({
+function ToonCard({
   _id,
   name,
   gender,
@@ -22,16 +22,15 @@ function Toon({
       armor.dodging +
       main_hand.dodging +
       off_hand.dodging +
-      trait.smashing,
+      trait.dodging,
     Entropy:
-      magical * 100 + main_hand.entropy + off_hand.entropy + trait.smashing,
+      magical * 100 + main_hand.entropy + off_hand.entropy + trait.entropy,
     Harmony:
-      magical * 100 + main_hand.harmony + off_hand.harmony + trait.smashing,
-    Moxie:
-      leadership * 100 + main_hand.harmony + off_hand.harmony + trait.smashing,
-    Wit: leadership * 100 + trait.smashing,
+      magical * 100 + main_hand.harmony + off_hand.harmony + trait.harmony,
+    Moxie: leadership * 100 + main_hand.moxie + off_hand.moxie + trait.moxie,
+    Wit: leadership * 100 + trait.wit,
   };
-  const hp = 40 + armor.hp + main_hand.hp + off_hand.hp;
+  const hp = 40 + armor.hp + main_hand.hp + off_hand.hp + trait.hp;
   return (
     <div className="card m-2" style={{ width: "18rem", float: "left" }}>
       <div className="card-image">
@@ -96,4 +95,4 @@ function Toon({
   );
 }
 
-export default Toon;
+export default ToonCard;

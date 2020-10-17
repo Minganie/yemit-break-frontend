@@ -22,19 +22,24 @@ function setJwt(jwt) {
 }
 
 async function get(url) {
-  // options.headers = {
-  //   "x-auth-token": auth.getJwt(),
-  // };
   const { data } = await axios.get(url, options);
   return data;
 }
 
-function post(url, data) {
-  return axios.post(url, data, options);
+async function post(url, data) {
+  console.log("posting to", url, "data", data);
+  const { data: created } = await axios.post(url, data, options);
+  return created;
+}
+
+async function put(url, data) {
+  const { data: updated } = await axios.put(url, data, options);
+  return updated;
 }
 
 export default {
   get,
   post,
+  put,
   setJwt,
 };

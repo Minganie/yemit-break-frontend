@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import * as yup from "yup";
-import Input from "./Input";
 
 class Form extends Component {
   state = {
@@ -42,38 +41,28 @@ class Form extends Component {
     await this.doSubmit();
   };
 
-  handleChange = async ({ currentTarget: input }) => {
+  handleChange = async (key, value) => {
     const state = { ...this.state };
-    state.data[input.name] = input.value;
-    const errorMessage = await this.validateProperty(input.name, input.value);
-    if (errorMessage) state.errors[input.name] = errorMessage;
-    else delete state.errors[input.name];
+    state.data[key] = value;
+    const errorMessage = await this.validateProperty(key, value);
+    if (errorMessage) state.errors[key] = errorMessage;
+    else delete state.errors[key];
     this.setState(state);
   };
 
-  renderButton(label) {
+  render() {
     return (
-      <button
-        type="submit"
-        className="button is-primary"
-        disabled={Object.keys(this.state.errors).length > 0}
-      >
-        {label}
-      </button>
-    );
-  }
-
-  renderInput(type, name, options) {
-    return (
-      <Input
-        type={type}
-        name={name}
-        label={options.label || name.charAt(0).toUpperCase() + name.slice(1)}
-        placeholder={options.placeholder || ""}
-        value={this.state.data[name]}
-        onChange={this.handleChange}
-        error={this.state.errors && this.state.errors[name]}
-      />
+      <form onSubmit={this.handleSubmit}>
+        <h1 className="title is-1">{this.state.title}</h1>
+        {this.renderBody()}
+        <button
+          type="submit"
+          className="button is-primary"
+          disabled={Object.keys(this.state.errors).length > 0}
+        >
+          {this.state.buttonLabel}
+        </button>
+      </form>
     );
   }
 }
