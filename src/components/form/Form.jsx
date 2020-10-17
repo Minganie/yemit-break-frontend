@@ -55,7 +55,7 @@ class Form extends Component {
     return (
       <button
         type="submit"
-        className="btn btn-primary"
+        className="button is-primary"
         disabled={Object.keys(this.state.errors).length > 0}
       >
         {label}
