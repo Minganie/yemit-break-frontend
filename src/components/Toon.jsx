@@ -33,60 +33,61 @@ function Toon({
   };
   const hp = 40 + armor.hp + main_hand.hp + off_hand.hp;
   return (
-    <div className="card m-2 float-left" style={{ width: "18rem" }}>
-      <img
-        className="card-img-top"
-        src={`images/${gender.toLowerCase()}/${race
-          .toLowerCase()
-          .replace("'", "")
-          .replace(" ", "")}.png`}
-        alt="Portrait"
-      />
-      <div className="card-body">
-        <h3 className="card-title">{name}</h3>
-        <ul className="pagination">
-          <li className="page-item mx-1">
+    <div className="card m-2" style={{ width: "18rem", float: "left" }}>
+      <div className="card-image">
+        <figure className="image">
+          <img
+            src={`images/${gender.toLowerCase()}/${race
+              .toLowerCase()
+              .replace("'", "")
+              .replace(" ", "")}.png`}
+            alt={`Portrait of ${name}`}
+          />
+        </figure>
+      </div>
+      <h1 className="card-header-title">{name}</h1>
+      <div className="card-content">
+        <div className="level">
+          <div className="level-left">
             <img
+              className="level-item"
               src={`images/trait/${trait.name}.png`}
               title={trait.name}
               alt={trait.name}
             />
-          </li>
-          <li className="page-item mx-1">
             <img
+              className="level-item"
               src={`images/armor/${armor.name}.png`}
               title={armor.name + " Armor"}
               alt={armor.name + " Armor"}
             />
-          </li>
-          <li className="page-item mx-1">
             <img
+              className="level-item"
               src={`images/weapon/${main_hand.name}.png`}
               title={`Main hand: ${main_hand.name}`}
               alt={main_hand.name}
             />
-          </li>
-          {off_hand.name !== "Empty" && (
-            <li className="page-item mx-1">
+            {off_hand.name !== "Empty" && (
               <img
+                className="level-item"
                 src={`images/weapon/${off_hand.name}.png`}
                 title={`Off hand: ${off_hand.name}`}
                 alt={off_hand.name}
               />
-            </li>
-          )}
-        </ul>
+            )}
+          </div>
+        </div>
         {Object.keys(stats).map((key) => {
           return (
-            <div key={key} className="row my-2">
-              <div className="col-6">{key}</div>
-              <div className="col-6">{stats[key]}</div>
+            <div key={key} className="columns is-mobile">
+              <div className="column my-1 py-0">{key}</div>
+              <div className="column my-1 py-0">{stats[key]}</div>
             </div>
           );
         })}
-        <div className="row my-2">
-          <div className="col-6">Hp</div>
-          <div className="col-6">
+        <div className="columns is-mobile">
+          <div className="column">Hp</div>
+          <div className="column">
             {current_hp}/{hp}
           </div>
         </div>

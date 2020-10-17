@@ -2,7 +2,7 @@ import React from "react";
 import * as yup from "yup";
 import auth from "../services/authService";
 import common from "../yemit-break-common/common.json";
-import Form from "./Form";
+import Form from "./form/Form";
 
 class Login extends Form {
   state = {
@@ -37,7 +37,7 @@ class Login extends Form {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <h1>Login</h1>
+        <h1 className="title is-1">Login</h1>
         {this.renderInput("text", "email", {
           placeholder: "your.email@gmail.com",
         })}

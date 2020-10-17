@@ -1,5 +1,5 @@
 import React from "react";
-import Form from "./Form";
+import Form from "./form/Form";
 import * as yup from "yup";
 import common from "../yemit-break-common/common.json";
 import auth from "../services/authService";
@@ -57,7 +57,7 @@ class Register extends Form {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <h1>Register</h1>
+        <h1 className="title is-1">Register</h1>
         {this.renderInput("text", "email", {
           placeholder: "your.email@gmail.com",
         })}
