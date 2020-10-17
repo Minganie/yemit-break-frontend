@@ -17,7 +17,14 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
+function setJwt(jwt) {
+  axios.defaults.headers.common["x-auth-token"] = jwt;
+}
+
 async function get(url) {
+  // options.headers = {
+  //   "x-auth-token": auth.getJwt(),
+  // };
   const { data } = await axios.get(url, options);
   return data;
 }
@@ -29,4 +36,5 @@ function post(url, data) {
 export default {
   get,
   post,
+  setJwt,
 };

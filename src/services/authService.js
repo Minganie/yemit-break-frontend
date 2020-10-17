@@ -6,6 +6,8 @@ import config from "../config";
 
 const key = "token";
 
+http.setJwt(getJwt());
+
 export async function register(account) {
   try {
     const { data } = await http.post(config.api + "users", account);
@@ -46,9 +48,14 @@ export function getCurrentUser() {
   }
 }
 
+export function getJwt() {
+  return localStorage.getItem(key);
+}
+
 export default {
   register,
   login,
   logout,
   getCurrentUser,
+  getJwt,
 };
