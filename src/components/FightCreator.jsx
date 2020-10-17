@@ -1,7 +1,7 @@
 import React from "react";
 
-function Fight(props) {
-  return <h1>Here there be a fight</h1>;
+function FightCreator(props) {
+  return <h1>Here there be a form to create a fight</h1>;
 }
 
-export default Fight;
+export default FightCreator;

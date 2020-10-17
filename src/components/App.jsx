@@ -5,8 +5,9 @@ import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import auth from "../services/authService";
-import Navbar from "./Navbar";
-import Fight from "./Fight";
+import Navbar from "./navbar/Navbar";
+import FightCombat from "./FightCombat";
+import FightCreator from "./FightCreator";
 import Register from "./Register";
 import Login from "./Login";
 import Logout from "./Logout";
@@ -27,9 +28,10 @@ class App extends Component {
         <Navbar user={this.state.user} />
         <div className="container">
           <Switch>
-            <Route path="/my-toon" component={ToonEditor} />
+            <Route path="/my-toon/:id?" component={ToonEditor} />
             <Route path="/all-toons" component={ToonLister} />
-            <Route path="/fight" component={Fight} />
+            <Route path="/fight/:id" component={FightCombat} />
+            <Route path="/fight" component={FightCreator} />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <Route path="/logout" component={Logout} />
