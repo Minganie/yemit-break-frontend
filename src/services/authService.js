@@ -10,9 +10,9 @@ http.setJwt(getJwt());
 
 export async function register(account) {
   try {
-    const { data } = await http.post(config.api + "users", account);
-    localStorage.setItem(key, data.jwt);
-    return data;
+    const user = await http.post(config.api + "users", account);
+    localStorage.setItem(key, user.jwt);
+    return user;
   } catch (e) {
     const { data } = e.response;
     toast.error(data.message);
@@ -22,12 +22,12 @@ export async function register(account) {
 
 export async function login(email, password) {
   try {
-    const { data } = await http.post(config.api + "users/login", {
+    const user = await http.post(config.api + "users/login", {
       email,
       password,
     });
-    localStorage.setItem(key, data.jwt);
-    return data;
+    localStorage.setItem(key, user.jwt);
+    return user;
   } catch (e) {
     const { data } = e.response;
     toast.error(data.message);

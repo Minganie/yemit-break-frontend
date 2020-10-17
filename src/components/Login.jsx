@@ -3,9 +3,12 @@ import * as yup from "yup";
 import auth from "../services/authService";
 import common from "../yemit-break-common/common.json";
 import Form from "./form/Form";
+import Input from "./form/Input";
 
 class Login extends Form {
   state = {
+    title: "Login",
+    buttonLabel: "Login",
     data: {
       email: "",
       password: "",
@@ -34,16 +37,28 @@ class Login extends Form {
     }
   }
 
-  render() {
+  renderBody() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <h1 className="title is-1">Login</h1>
-        {this.renderInput("text", "email", {
-          placeholder: "your.email@gmail.com",
-        })}
-        {this.renderInput("password", "password", { placeholder: "*****" })}
-        {this.renderButton("Login")}
-      </form>
+      <React.Fragment>
+        <Input
+          type="text"
+          name="email"
+          label="Email"
+          value={this.state.data.email}
+          onChange={this.handleChange}
+          placeholder="your.email@gmail.com"
+          error={this.state.errors.email}
+        />
+        <Input
+          type="password"
+          name="password"
+          label="Password"
+          value={this.state.data.password}
+          onChange={this.handleChange}
+          placeholder="*****"
+          error={this.state.errors.password}
+        />
+      </React.Fragment>
     );
   }
 }
