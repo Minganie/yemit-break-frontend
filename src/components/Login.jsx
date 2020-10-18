@@ -28,13 +28,11 @@ class Login extends Form {
   });
 
   async doSubmit() {
-    if (Object.keys(this.state.errors).length === 0) {
-      const logged = await auth.login(
-        this.state.data.email,
-        this.state.data.password
-      );
-      if (logged) window.location = "/";
-    }
+    const logged = await auth.login(
+      this.state.data.email,
+      this.state.data.password
+    );
+    if (logged) window.location = "/";
   }
 
   renderBody() {

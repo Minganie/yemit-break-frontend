@@ -30,7 +30,12 @@ class Form extends Component {
         return null;
       })
       .catch((e) => {
-        return e.message;
+        const regex = /\[\d+\]/;
+        let msg = e.message;
+        if (e.path && e.path.match(regex) && !e.message.match(regex)) {
+          msg = e.path + " " + e.message;
+        }
+        return msg;
       });
   };
 
@@ -38,15 +43,18 @@ class Form extends Component {
     e.preventDefault();
     const errors = await this.validate();
     this.setState({ errors });
-    await this.doSubmit();
+    if (Object.keys(this.state.errors).length === 0) {
+      await this.doSubmit();
+    }
   };
 
   handleChange = async (key, value) => {
     const state = { ...this.state };
     state.data[key] = value;
     const errorMessage = await this.validateProperty(key, value);
-    if (errorMessage) state.errors[key] = errorMessage;
-    else delete state.errors[key];
+    if (errorMessage) {
+      state.errors[key] = errorMessage;
+    } else delete state.errors[key];
     this.setState(state);
   };
 

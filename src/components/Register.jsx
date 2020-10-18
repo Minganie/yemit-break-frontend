@@ -51,10 +51,8 @@ class Register extends Form {
   };
 
   async doSubmit() {
-    if (Object.keys(this.state.errors).length === 0) {
-      const logged = await auth.register(this.state.data);
-      if (logged) window.location = "/";
-    }
+    const logged = await auth.register(this.state.data);
+    if (logged) window.location = "/";
   }
 
   renderBody() {

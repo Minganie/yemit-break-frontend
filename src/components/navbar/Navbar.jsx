@@ -14,7 +14,8 @@ class Navbar extends Component {
   };
   async componentDidMount() {
     const user = auth.getCurrentUser();
-    this.setState({ user });
+    const fights = await http.get(config.api + "fights");
+    this.setState({ user, fights });
     if (user) {
       const toons = await http.get(config.api + "users/me/toons");
       this.setState({ toons });

@@ -163,24 +163,22 @@ class ToonEditor extends Form {
   }
 
   async doSubmit() {
-    if (Object.keys(this.state.errors).length === 0) {
-      const { data: toon } = this.state;
-      try {
-        if (toon.is_new) {
-          const resp = await httpService.post(`${config.api}toons/`, toon);
-          this.setState({ data: this.getStateReadyToon(resp) });
-          if (resp) toast.success("Created!");
-        } else {
-          const resp = await httpService.put(
-            `${config.api}toons/${toon._id}`,
-            toon
-          );
-          this.setState({ data: this.getStateReadyToon(resp) });
-          if (resp) toast.success("Saved!");
-        }
-      } catch (e) {
-        console.error(e);
+    const { data: toon } = this.state;
+    try {
+      if (toon.is_new) {
+        const resp = await httpService.post(`${config.api}toons/`, toon);
+        this.setState({ data: this.getStateReadyToon(resp) });
+        if (resp) toast.success("Created!");
+      } else {
+        const resp = await httpService.put(
+          `${config.api}toons/${toon._id}`,
+          toon
+        );
+        this.setState({ data: this.getStateReadyToon(resp) });
+        if (resp) toast.success("Saved!");
       }
+    } catch (e) {
+      console.error(e);
     }
   }
 

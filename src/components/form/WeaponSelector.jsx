@@ -54,7 +54,6 @@ function WeaponSelector({ mainHand, offHand, weapons, onChange }) {
         label="Off Hand"
         value={wholeOffHand && wholeOffHand._id}
         options={weapons.filter(offHandFilter)}
-        options={weapons.filter(offHandFilter)}
         onChange={handleChange}
         disabled={wholeMainHand && wholeMainHand.hands === 2}
       />
