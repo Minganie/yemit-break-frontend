@@ -1,26 +1,40 @@
 import React, { Component } from "react";
+import { toast } from "react-toastify";
 import NavbarBrand from "./NavbarBrand";
 import NavbarMenu from "./NavbarMenu";
-import auth from "../../services/authService";
-import http from "../../services/httpService";
-import config from "../../config";
 
 class Navbar extends Component {
   state = {
-    user: null,
-    toons: [],
-    fights: [],
     burgerIsOpen: false,
+    listening: false,
   };
-  async componentDidMount() {
-    const user = auth.getCurrentUser();
-    const fights = await http.get(config.api + "fights");
-    this.setState({ user, fights });
-    if (user) {
-      const toons = await http.get(config.api + "users/me/toons");
-      this.setState({ toons });
+
+  componentDidMount() {
+    if (this.props.stream && !this.state.listening) {
+      this.setState({ listening: true });
+      this.props.stream.addEventListener("fight-created", (event) => {
+        try {
+          toast.info("A DM just added a fight");
+        } catch (e) {
+          console.error("Error trying to decode fight-created data", e);
+        }
+      });
     }
   }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.stream && !this.state.listening) {
+      this.setState({ listening: true });
+      this.props.stream.addEventListener("fight-created", (event) => {
+        try {
+          toast.info("A DM just added a fight");
+        } catch (e) {
+          console.error("Error trying to decode fight-created data", e);
+        }
+      });
+    }
+  }
+
   handleToggle = (e) => {
     this.setState({ burgerIsOpen: !this.state.burgerIsOpen });
   };
@@ -30,9 +44,9 @@ class Navbar extends Component {
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <NavbarBrand onToggle={this.handleToggle} />
         <NavbarMenu
-          user={this.state.user}
-          toons={this.state.toons}
-          fights={this.state.fights}
+          user={this.props.user}
+          toons={this.props.toons}
+          fights={this.props.fights}
           isOpen={this.state.burgerIsOpen}
         />
       </nav>
