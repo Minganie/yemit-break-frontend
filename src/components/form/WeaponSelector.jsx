@@ -43,17 +43,17 @@ function WeaponSelector({ mainHand, offHand, weapons, onChange }) {
         </div>
       )}
       <Select
-        id="main_hand"
+        name="main_hand"
         label="Main Hand"
         value={wholeMainHand && wholeMainHand._id}
-        options={weapons.filter((w) => w.name !== "Empty")}
+        list={weapons.filter((w) => w.name !== "Empty")}
         onChange={handleChange}
       />
       <Select
-        id="off_hand"
+        name="off_hand"
         label="Off Hand"
         value={wholeOffHand && wholeOffHand._id}
-        options={weapons.filter(offHandFilter)}
+        list={weapons.filter(offHandFilter)}
         onChange={handleChange}
         disabled={wholeMainHand && wholeMainHand.hands === 2}
       />

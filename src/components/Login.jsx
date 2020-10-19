@@ -41,19 +41,17 @@ class Login extends Form {
         <Input
           type="text"
           name="email"
-          label="Email"
           value={this.state.data.email}
           onChange={this.handleChange}
-          placeholder="your.email@gmail.com"
+          options={{ placeholder: "your.email@gmail.com" }}
           error={this.state.errors.email}
         />
         <Input
           type="password"
           name="password"
-          label="Password"
           value={this.state.data.password}
           onChange={this.handleChange}
-          placeholder="*****"
+          options={{ placeholder: "*****" }}
           error={this.state.errors.password}
         />
       </React.Fragment>

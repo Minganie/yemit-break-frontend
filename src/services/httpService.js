@@ -27,7 +27,6 @@ async function get(url) {
 }
 
 async function post(url, data) {
-  console.log("posting to", url, "data", data);
   const { data: created } = await axios.post(url, data, options);
   return created;
 }

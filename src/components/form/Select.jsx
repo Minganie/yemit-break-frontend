@@ -1,9 +1,9 @@
 import React from "react";
 
 function Select({
-  id,
-  label,
+  name,
   value,
+  list,
   options,
   onChange,
   disabled = false,
@@ -14,17 +14,19 @@ function Select({
     return null;
   },
 }) {
+  options = options || {};
+
   return (
     <div className="field">
-      <label className="label" htmlFor={id}>
-        {label}
+      <label className="label" htmlFor={name}>
+        {options.label || name[0].toUpperCase() + name.slice(1)}
       </label>
       <div className="control">
         <div className="select">
           <select
             value={value}
-            id={id}
-            name={id}
+            id={name}
+            name={name}
             onChange={({ currentTarget: me }) => {
               onChange(me.name, me.value);
             }}
@@ -33,7 +35,7 @@ function Select({
             <option value="" disabled={true}>
               Pick one...
             </option>
-            {options.map((option) => {
+            {list.map((option) => {
               return (
                 <option
                   key={option._id}

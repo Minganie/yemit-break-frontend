@@ -1,16 +1,17 @@
 import React from "react";
 
-function ButtonedNumber({ id, label, value, onChange, max }) {
+function ButtonedNumber({ name, value, onChange, max, options }) {
+  options = options || {};
   return (
     <div className="field">
-      <label className="label" htmlFor={id}>
-        {label}
+      <label className="label" htmlFor={name}>
+        {options.label || name[0].toUpperCase() + name.slice(1)}
       </label>
       <div className="field has-addons">
         <div className="control">
           <button
             type="button"
-            name={id}
+            name={name}
             className="button is-primary"
             disabled={value === 0}
             onClick={({ currentTarget: me }) => {
@@ -23,8 +24,8 @@ function ButtonedNumber({ id, label, value, onChange, max }) {
         <div className="control">
           <input
             type="text"
-            id={id}
-            name={id}
+            id={name}
+            name={name}
             className="input"
             value={value}
             readOnly
@@ -33,7 +34,7 @@ function ButtonedNumber({ id, label, value, onChange, max }) {
         <div className="control">
           <button
             type="button"
-            name={id}
+            name={name}
             className="button is-primary"
             disabled={value === 4 || max === 6}
             onClick={({ currentTarget: me }) => {

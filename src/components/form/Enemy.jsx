@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Input from "./Input";
 
 function Enemy({ index, enemy, error, onChange }) {
@@ -8,7 +8,6 @@ function Enemy({ index, enemy, error, onChange }) {
         <Input
           type="text"
           name="name"
-          label="Name"
           value={enemy.name}
           onChange={(k, v) => {
             onChange(k, v, index);
@@ -21,7 +20,7 @@ function Enemy({ index, enemy, error, onChange }) {
           type="number"
           name="dc"
           value={enemy.dc}
-          label="DC"
+          options={{ label: "DC" }}
           onChange={(k, v) => {
             onChange(k, v, index);
           }}
@@ -33,7 +32,7 @@ function Enemy({ index, enemy, error, onChange }) {
           type="number"
           name="ab"
           value={enemy.ab}
-          label="AB"
+          options={{ label: "AB" }}
           onChange={(k, v) => {
             onChange(k, v, index);
           }}
@@ -45,7 +44,7 @@ function Enemy({ index, enemy, error, onChange }) {
           type="number"
           name="hp"
           value={enemy.hp}
-          label="HP"
+          options={{ label: "HP" }}
           onChange={(k, v) => {
             onChange(k, v, index);
           }}

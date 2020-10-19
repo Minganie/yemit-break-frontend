@@ -57,43 +57,36 @@ class ToonEditor extends Form {
   });
 
   genders = [
-    { _id: "Male", value: "Male", name: "Male" },
-    { _id: "Female", value: "Female", name: "Female" },
+    { _id: "Male", name: "Male" },
+    { _id: "Female", name: "Female" },
   ];
   races = [
     {
       _id: "Miqo'te",
-      value: "Miqo'te",
       name: "Miqo'te",
     },
     {
       _id: "Hyur",
-      value: "Hyur",
       name: "Hyur",
     },
     {
       _id: "Roegadyn",
-      value: "Roegadyn",
       name: "Roegadyn",
     },
     {
       _id: "Elezen",
-      value: "Elezen",
       name: "Elezen",
     },
     {
       _id: "Au Ra",
-      value: "Au Ra",
       name: "Au Ra",
     },
     {
       _id: "Viera",
-      value: "Viera",
       name: "Viera",
     },
     {
       _id: "Hrothgar",
-      value: "Hrothgar",
       name: "Hrothgar",
     },
   ];
@@ -249,24 +242,22 @@ class ToonEditor extends Form {
         <Input
           type="text"
           name="name"
-          label="Name"
           value={this.state.data.name}
           onChange={this.handleChange}
-          placeholder="Zename Ofzetoon..."
+          options={{ placeholder: "Zename Ofzetoon..." }}
           error={this.state.errors.name}
         />
         <Select
-          id="gender"
-          label="Gender"
+          name="gender"
           value={this.state.data.gender}
-          options={this.genders}
+          list={this.genders}
           onChange={this.handleChange}
         />
         <Select
-          id="race"
-          label="Species"
+          name="race"
           value={this.state.data.race}
-          options={this.races}
+          list={this.races}
+          options={{ label: "Species" }}
           onChange={this.handleChange}
         />
         <div className="field">
@@ -288,38 +279,33 @@ class ToonEditor extends Form {
           )}
         </div>
         <ButtonedNumber
-          id="physical"
+          name="physical"
           value={physical}
-          label="Physical"
           onChange={this.handleChange}
           max={physical + magical + leadership}
         />
         <ButtonedNumber
-          id="magical"
+          name="magical"
           value={magical}
-          label="Magical"
           onChange={this.handleChange}
           max={physical + magical + leadership}
         />
         <ButtonedNumber
-          id="leadership"
+          name="leadership"
           value={leadership}
-          label="Leadership"
           onChange={this.handleChange}
           max={physical + magical + leadership}
         />
         <Select
-          id="trait"
-          label="Trait"
+          name="trait"
           value={this.state.data.trait}
-          options={this.state.traits}
+          list={this.state.traits}
           onChange={this.handleChange}
         />
         <Select
-          id="armor"
-          label="Armor"
+          name="armor"
           value={this.state.data.armor}
-          options={this.state.armors}
+          list={this.state.armors}
           onChange={this.handleChange}
           constraint={(a) => {
             return a.physical <= this.state.data.physical;

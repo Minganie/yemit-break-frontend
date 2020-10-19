@@ -61,28 +61,25 @@ class Register extends Form {
         <Input
           type="text"
           name="email"
-          label="Email"
           value={this.state.data.email}
           onChange={this.handleChange}
-          placeholder="your.email@gmail.com"
+          options={{ placeholder: "your.email@gmail.com" }}
           error={this.state.errors.email}
         />
         <Input
           type="password"
           name="password"
-          label="Password"
           value={this.state.data.password}
           onChange={this.handleChange}
-          placeholder="*****"
+          options={{ placeholder: "*****" }}
           error={this.state.errors.password}
         />
         <Input
           type="password"
           name="password_confirmation"
-          label="Confirm Password"
           value={this.state.data.password_confirmation}
           onChange={this.handleChange}
-          placeholder="*****"
+          options={{ placeholder: "*****", label: "Confirm Password" }}
           error={this.state.errors.password_confirmation}
         />
       </React.Fragment>

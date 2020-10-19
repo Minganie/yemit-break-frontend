@@ -33,23 +33,25 @@ class Input extends Component {
   };
 
   render() {
+    let { type, name, value, onChange, options, error } = this.props;
+    options = options || {};
     return (
       <div className="field">
-        <label className="label" htmlFor={this.props.name}>
-          {this.props.label}
+        <label className="label" htmlFor={name}>
+          {options.label || name[0].toUpperCase() + name.slice(1)}
         </label>
         <div className="control has-icons-left">
           <input
-            type={this.props.type}
+            type={type}
             className="input"
-            id={this.props.name}
-            name={this.props.name}
-            value={this.props.value}
+            id={name}
+            name={name}
+            value={value}
             onKeyPress={this.checkChange}
             onChange={({ currentTarget: me }) => {
-              this.props.onChange(me.name, me.value);
+              onChange(me.name, me.value);
             }}
-            placeholder={this.props.placeholder}
+            placeholder={options.placeholder || ""}
           />
           {this.renderIcons()}
         </div>
@@ -58,9 +60,7 @@ class Input extends Component {
             "CAPS lock is on!"
           </p>
         )}
-        {this.props.error && (
-          <p className="help is-danger">{this.props.error}</p>
-        )}
+        {error && <p className="help is-danger">{error}</p>}
       </div>
     );
   }

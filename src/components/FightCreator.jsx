@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-toastify";
 import Form from "./form/Form";
 import Input from "./form/Input";
 import * as yup from "yup";
@@ -63,26 +64,27 @@ class FightCreator extends Form {
 
   async doSubmit() {
     const fight = await http.post(config.api + "fights", this.state.data);
-    window.location = "/fight/" + fight._id;
+    toast.success("Fight created!");
+    this.props.history.replace("/fight/" + fight._id);
   }
 
   renderBody() {
     const { data: fight, errors } = this.state;
+    /*type, name, value, onChange, options, error*/
     return (
       <React.Fragment>
         <Input
           type="text"
           name="name"
-          label="Name"
           value={fight.title}
           onChange={this.handleChange}
           error={errors.name}
         />
         <MultiSelect
-          id="toons"
-          label="Participating toons"
+          name="toons"
+          options={{ label: "Participating toons" }}
           value={fight.toons}
-          options={this.state.toons}
+          list={this.state.toons}
           onChange={this.handleChange}
           error={errors.toons}
         />
