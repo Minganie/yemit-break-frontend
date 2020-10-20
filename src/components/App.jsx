@@ -20,7 +20,8 @@ class App extends Component {
   state = {
     stream: null,
     user: null,
-    toons: [],
+    allToons: [],
+    myToons: [],
     fights: [],
   };
 
@@ -28,8 +29,9 @@ class App extends Component {
     const state = {};
     state.user = auth.getCurrentUser();
     state.fights = await http.get(config.api + "fights");
+    state.allToons = await http.get(config.api + "toons");
     if (state.user) {
-      state.toons = await http.get(config.api + "users/me/toons");
+      state.myToons = await http.get(config.api + "users/me/toons");
     }
     state.stream = new EventSource(config.api + "events");
     state.stream.onopen = () => {
@@ -53,19 +55,39 @@ class App extends Component {
         <Navbar
           user={this.state.user}
           fights={this.state.fights}
-          toons={this.state.toons}
+          toons={this.state.myToons}
           stream={this.state.stream}
         />
         <div className="container">
           <Switch>
             <Route path="/my-toon/:id?" component={ToonEditor} />
-            <Route path="/all-toons" component={ToonLister} />
-            <Route path="/fight/:id" component={FightCombat} />
-            <Route path="/fight" component={FightCreator} />
+            <Route
+              path="/all-toons"
+              render={(props) => {
+                return <ToonLister toons={this.state.allToons} {...props} />;
+              }}
+            />
+            <Route
+              path="/fight/:id"
+              render={(props) => {
+                return (
+                  <FightCombat
+                    fights={this.state.fights}
+                    toons={this.state.allToons}
+                    {...props}
+                  />
+                );
+              }}
+            />
+            <Route
+              path="/fight"
+              render={(props) => {
+                return <FightCreator toons={this.state.allToons} {...props} />;
+              }}
+            />
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <Route path="/logout" component={Logout} />
-            <Route path="/" exact component={ToonLister} />
             <Redirect to="/all-toons" />
           </Switch>
         </div>
