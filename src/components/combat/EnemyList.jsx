@@ -1,8 +1,16 @@
 import React from "react";
 import EnemyLine from "./EnemyLine";
 
-function EnemyList({ enemies, phase, toons }) {
+function EnemyList({ enemies, phase, toons, attacks }) {
   enemies = enemies || [];
+  attacks = attacks ? [...attacks] : [];
+  toons = toons || [];
+  for (const attack of attacks) {
+    const toon = toons.find((t) => {
+      return (t._id = attack.to);
+    });
+    attack.to = toon.name;
+  }
   return (
     <React.Fragment>
       <h3 className="title is-3">Them</h3>
@@ -12,7 +20,9 @@ function EnemyList({ enemies, phase, toons }) {
             key={enemy._id}
             enemy={enemy}
             phase={phase}
-            toons={toons}
+            attacks={attacks.filter((a) => {
+              return a.from === enemy._id;
+            })}
           />
         );
       })}

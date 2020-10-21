@@ -7,6 +7,10 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
+String.prototype.capitalize = function () {
+  return this[0].toUpperCase() + this.slice(1);
+};
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>

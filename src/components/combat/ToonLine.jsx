@@ -9,7 +9,7 @@ function ToonLine({ toon, phase, toons }) {
     case "Support":
       ready = toon.quickAction !== null;
       break;
-    case "Offense":
+    case "Action":
       ready = toon.action !== null;
       break;
     case "Defense":
