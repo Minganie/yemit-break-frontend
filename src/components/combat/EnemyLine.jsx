@@ -18,15 +18,15 @@ function EnemyLine({ enemy, phase, attacks }) {
       );
   };
   return (
-    <div className="columns">
-      <div className="column is-2">
+    <div className="columns is-multiline my-3">
+      <div className="column is-2 py-0">
         {drawReadySign(phase === "Defense" ? enemy.action : true)}
       </div>
-      <div className="column">
-        {enemy.name}
+      <div className="column is-8 py-0">{enemy.name}</div>
+      <div className="column is-2 py-0">{`${enemy.current_hp}/${enemy.hp}`}</div>
+      <div className="column is-10 is-offset-2 py-0">
         <Attacks attacks={attacks} />
       </div>
-      <div className="column"> {`${enemy.current_hp}/${enemy.hp}`}</div>
     </div>
   );
 }

@@ -30,13 +30,13 @@ function ToonLine({ toon, phase, toons }) {
       );
   };
   return (
-    <div className="columns">
-      <div className="column is-2">{drawReadySign(ready)}</div>
-      <div className="column">
-        {toon.name}
+    <div className="columns is-multiline my-3">
+      <div className="column is-2 py-0">{drawReadySign(ready)}</div>
+      <div className="column is-8 py-0">{toon.name}</div>
+      <div className="column is-2 py-0">{`${toon.current_hp}/${hp}`}</div>
+      <div className="column is-10 is-offset-2 py-0">
         <Statuses toons={toons} statuses={toon.statuses} />
       </div>
-      <div className="column"> {`${toon.current_hp}/${hp}`}</div>
     </div>
   );
 }
