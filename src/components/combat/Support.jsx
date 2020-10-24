@@ -1,24 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
 import SupportToon from "./SupportToon";
 import config from "../../config";
 import http from "../../services/httpService";
 
-class Support extends Component {
-  state = {
-    quickAction: "Pass",
-    done: true,
-    target: "",
-    modifier: "",
-  };
-  toons = this.props.toons || [];
+function Support({ toons, fight, myToons }) {
+  toons = toons || [];
 
-  handleSubmit = async (data) => {
-    let url = config.api + "fights/" + this.props.fight._id + "/support/";
+  const handleSubmit = async (data) => {
+    let url = config.api + "fights/" + fight._id + "/support/";
     switch (data.name) {
       case "Cover":
         url += "cover";
         break;
-      case "Inspire Action":
+      case "Inspire Offense":
         url += "inspire";
         break;
       case "Inspire Guard":
@@ -42,21 +36,15 @@ class Support extends Component {
     }
   };
 
-  render() {
-    return (
-      <React.Fragment>
-        {this.props.myToons.map((toon) => {
-          return (
-            <SupportToon
-              toons={this.toons}
-              myToon={toon}
-              onSubmit={this.handleSubmit}
-            />
-          );
-        })}
-      </React.Fragment>
-    );
-  }
+  return (
+    <React.Fragment>
+      {myToons.map((toon) => {
+        return (
+          <SupportToon toons={toons} myToon={toon} onSubmit={handleSubmit} />
+        );
+      })}
+    </React.Fragment>
+  );
 }
 
 export default Support;

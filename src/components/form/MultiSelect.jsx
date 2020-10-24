@@ -16,7 +16,7 @@ function MultiSelect({ name, value, list, options, onChange }) {
         {(options && options.label) || name[0].toUpperCase() + name.slice(1)}
       </label>
       <div className="control">
-        <div className="select">
+        <div className="select is-multiple">
           <select
             id={name}
             name={name}

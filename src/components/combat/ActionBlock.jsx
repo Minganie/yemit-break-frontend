@@ -1,5 +1,6 @@
 import React from "react";
 import Support from "./Support";
+import Offense from "./Offense";
 
 function ActionBlock({ phase, toons, user, fight }) {
   const myToons = (toons || []).filter((toon) => {
@@ -9,7 +10,7 @@ function ActionBlock({ phase, toons, user, fight }) {
     case "Support":
       return <Support toons={toons} myToons={myToons} fight={fight} />;
     case "Action":
-      return <div>Here there be offenses</div>;
+      return <Offense toons={toons} myToons={myToons} fight={fight} />;
     case "Defense":
     default:
       return <div>Here there be defenses</div>;

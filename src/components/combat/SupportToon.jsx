@@ -156,7 +156,7 @@ class SupportToon extends Component {
         };
       case "Inspire":
         return {
-          name: "Inspire Action",
+          name: "Inspire Offense",
           from: myToon._id,
           to: this.state.target,
           action: this.state.modifier,
@@ -191,9 +191,9 @@ class SupportToon extends Component {
     const { myToon, onSubmit } = this.props;
     return (
       <div className="box">
-        <h3 className="title is-3">{`${myToon.name}'s action`}</h3>
+        <h3 className="title is-3">{`${myToon.name}'s quick action`}</h3>
         <div className="field">
-          <label className="label">Action</label>
+          <label className="label">Quick Action</label>
           <div className="control">
             <div className="select">
               <select

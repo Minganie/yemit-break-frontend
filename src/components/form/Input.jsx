@@ -24,6 +24,12 @@ class Input extends Component {
           <i className="fas fa-id-card" />
         </span>
       );
+    if (this.props.name === "roll")
+      return (
+        <span className="icon is-small is-left">
+          <i className="fas fa-dice-two" />
+        </span>
+      );
     return null;
   }
 
