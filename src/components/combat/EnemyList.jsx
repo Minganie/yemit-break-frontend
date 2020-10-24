@@ -1,7 +1,7 @@
 import React from "react";
 import EnemyLine from "./EnemyLine";
 
-function EnemyList({ enemies, phase, toons, attacks }) {
+function EnemyList({ enemies, phase, toons, attacks, user }) {
   enemies = enemies || [];
   attacks = attacks ? [...attacks] : [];
   toons = toons || [];
@@ -23,6 +23,7 @@ function EnemyList({ enemies, phase, toons, attacks }) {
             attacks={attacks.filter((a) => {
               return a.from === enemy._id;
             })}
+            isDm={user && user.permissions && user.permissions.includes("DM")}
           />
         );
       })}

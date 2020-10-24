@@ -1,7 +1,6 @@
 import React from "react";
 
 function Attacks({ attacks }) {
-  console.log(attacks);
   return (
     <React.Fragment>
       {attacks.map((attack) => {

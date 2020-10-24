@@ -2,7 +2,7 @@ import React from "react";
 
 import Attacks from "./Attacks";
 
-function EnemyLine({ enemy, phase, attacks }) {
+function EnemyLine({ enemy, phase, attacks, isDm }) {
   const drawReadySign = (ready) => {
     if (ready)
       return (
@@ -23,7 +23,9 @@ function EnemyLine({ enemy, phase, attacks }) {
         {drawReadySign(phase === "Defense" ? enemy.action : true)}
       </div>
       <div className="column is-8 py-0">{enemy.name}</div>
-      <div className="column is-2 py-0">{`${enemy.current_hp}/${enemy.hp}`}</div>
+      {isDm && (
+        <div className="column is-2 py-0">{`${enemy.current_hp}/${enemy.hp}`}</div>
+      )}
       <div className="column is-10 is-offset-2 py-0">
         <Attacks attacks={attacks} />
       </div>

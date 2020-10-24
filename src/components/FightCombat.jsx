@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import ActionBlock from "./combat/ActionBlock";
 import CombatLog from "./combat/CombatLog";
-import ToonList from "./combat/ToonList";
-import EnemyList from "./combat/EnemyList";
+import StatusPane from "./combat/StatusPane";
+import TitleBlock from "./combat/TitleBlock";
 import http from "../services/httpService";
 import config from "../config";
 import { toast } from "react-toastify";
@@ -48,39 +49,22 @@ function FightCombat({ stream, match, fights, toons: propToons, user }) {
 
   return (
     <React.Fragment>
-      <div className="columns mt-1">
-        <div className="column is-three-quarters">
-          <h1 className="title is-1">{name}</h1>
-          <h2 className="title">{`Round ${round} - ${phase}`}</h2>
-        </div>
-        <div className="column">
-          {user && user.permissions.includes("DM") && (
-            <button
-              type="button"
-              onClick={advanceFight}
-              className={`button is-danger ${advancing ? "is-loading" : ""}`}
-              disabled={advancing}
-            >
-              Next phase
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="columns">
-        <div className="column has-background-success-light">
-          <ToonList toons={toons} phase={phase} />
-        </div>
-        <div className="column has-background-danger-light">
-          <EnemyList
-            enemies={enemies}
-            toons={toons}
-            phase={phase}
-            attacks={fight.attacks}
-          />
-        </div>
-      </div>
-      <div>Here's the actions</div>
+      <TitleBlock
+        name={name}
+        round={round}
+        phase={phase}
+        user={user}
+        onClick={advanceFight}
+        advancing={advancing}
+      />
+      <StatusPane
+        toons={toons}
+        phase={phase}
+        enemies={enemies}
+        fight={fight}
+        user={user}
+      />
+      <ActionBlock phase={phase} toons={toons} user={user} fight={fight} />
       <CombatLog stream={stream} />
     </React.Fragment>
   );
