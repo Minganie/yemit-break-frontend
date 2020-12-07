@@ -46,14 +46,17 @@ class OffenseToon extends Component {
       case "Heal":
         this.setState({
           target: value,
-          isValid: value && value.length && this.state.roll,
+          isValid: value && value.length && Number.isInteger(this.state.roll),
         });
         break;
       case "Attack":
         this.setState({
           target: value,
           isValid:
-            value && value.length && this.state.roll && this.state.modifier,
+            value &&
+            value.length &&
+            Number.isInteger(this.state.roll) &&
+            this.state.modifier,
         });
         break;
       case "Precise Attack":
@@ -69,26 +72,29 @@ class OffenseToon extends Component {
   };
 
   handleRollChange = (name, value) => {
-    const val = Math.max(Math.min(value, 1000), 0);
+    value = Math.max(Math.min(value, 1000), 0);
     switch (this.state.action) {
       case "Heal":
         this.setState({
-          roll: val,
-          isValid: val && this.state.target && this.state.target.length,
+          roll: value,
+          isValid:
+            Number.isInteger(value) &&
+            this.state.target &&
+            this.state.target.length,
         });
         break;
       case "Attack":
         this.setState({
-          roll: val,
+          roll: value,
           isValid:
-            val &&
+            Number.isInteger(value) &&
             this.state.target &&
             this.state.target.length &&
             this.state.modifier,
         });
         break;
       default:
-        this.setState({ roll: val, isValid: true });
+        this.setState({ roll: value, isValid: true });
     }
   };
 
@@ -99,7 +105,9 @@ class OffenseToon extends Component {
         this.setState({
           modifier: value,
           isValid:
-            this.state.roll && this.state.target && this.state.target.length,
+            Number.isInteger(this.state.roll) &&
+            this.state.target &&
+            this.state.target.length,
         });
         break;
       case "Precise Attack":

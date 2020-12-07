@@ -25,9 +25,9 @@ class Dodger extends Component {
   };
 
   handleRollChange = (name, value) => {
-    const val = Math.max(Math.min(value, 1000), 0);
+    value = Math.max(Math.min(value, 1000), 0);
     this.setState({
-      roll: val,
+      roll: value,
     });
   };
 
@@ -48,7 +48,7 @@ class Dodger extends Component {
           className={`button is-primary ${
             this.state.submitting ? "is-loading" : ""
           }`}
-          disabled={!this.state.roll}
+          disabled={!Number.isInteger(this.state.roll)}
           onClick={() => {
             onSubmit(this.handleSubmit());
           }}

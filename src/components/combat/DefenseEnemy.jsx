@@ -49,9 +49,13 @@ class DefenseEnemy extends Component {
   handleTargetChange = (name, value) => {
     let isValid;
     if (this.state.action === "Attack")
-      isValid = value && value.length && this.state.roll;
+      isValid = value && value.length && Number.isInteger(this.state.roll);
     else
-      isValid = value && value.length && this.state.roll && this.state.modifier;
+      isValid =
+        value &&
+        value.length &&
+        Number.isInteger(this.state.roll) &&
+        this.state.modifier;
     this.setState({
       target: value,
       isValid,
@@ -59,18 +63,21 @@ class DefenseEnemy extends Component {
   };
 
   handleRollChange = (name, value) => {
-    const val = Math.max(Math.min(value, 1000), 0);
+    value = Math.max(Math.min(value, 1000), 0);
     let isValid;
     if (this.state.action === "Attack")
-      isValid = value && this.state.target && this.state.target.length;
+      isValid =
+        Number.isInteger(value) &&
+        this.state.target &&
+        this.state.target.length;
     else
       isValid =
-        value &&
+        Number.isInteger(value) &&
         this.state.target &&
         this.state.target.length &&
         this.state.modifier;
     this.setState({
-      roll: val,
+      roll: value,
       isValid,
     });
   };
@@ -80,7 +87,10 @@ class DefenseEnemy extends Component {
     this.setState({
       modifier: val,
       isValid:
-        val && this.state.target && this.state.target.length && this.state.roll,
+        val &&
+        this.state.target &&
+        this.state.target.length &&
+        Number.isInteger(this.state.roll),
     });
   };
 
