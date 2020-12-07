@@ -36,6 +36,22 @@ function FightCombat({
           );
         }
       });
+      stream.addEventListener("fight-delete", (e) => {
+        try {
+          const { deleted } = JSON.parse(e.data);
+          if (deleted === match.params.id) {
+            toast.warn(
+              "A DM just concluded this fight. You have been automatically redirected."
+            );
+            history.replace("/");
+          }
+        } catch (e) {
+          console.error(
+            "Unexpected error while parsing deleted fight data:",
+            e
+          );
+        }
+      });
     }
   });
 

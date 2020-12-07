@@ -37,13 +37,15 @@ function Statuses({ toons, statuses, attacks }) {
   }
   if (statuses && statuses.is_guarding) {
     const target = toons.find((t) => t._id === statuses.guarding);
-    renders.push(<p key={renders.length + 1}>{`Guarding ${target.name}`}</p>);
+    renders.push(
+      <p key={renders.length + 1}>{`Inspiring ${target.name} to Guard`}</p>
+    );
   }
   if (statuses && statuses.is_guarded) {
     for (const guard of statuses.guarded_by) {
       const target = toons.find((t) => t._id === guard);
       renders.push(
-        <p key={renders.length + 1}>{`Guarded by ${target.name}`}</p>
+        <p key={renders.length + 1}>{`Inspired by ${target.name} to Guard`}</p>
       );
     }
   }
