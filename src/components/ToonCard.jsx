@@ -1,4 +1,5 @@
 import React from "react";
+import config from "../config";
 
 function ToonCard({
   _id,
@@ -36,7 +37,9 @@ function ToonCard({
       <div className="card-image">
         <figure className="image">
           <img
-            src={`images/${gender.toLowerCase()}/${race
+            src={`${
+              config.base
+            }/images/${gender.toLowerCase()}/${race
               .toLowerCase()
               .replace("'", "")
               .replace(" ", "")}.png`}
@@ -50,26 +53,26 @@ function ToonCard({
           <div className="level-left">
             <img
               className="level-item"
-              src={`images/trait/${trait.name}.png`}
+              src={`${config.base}/images/trait/${trait.name}.png`}
               title={trait.name}
               alt={trait.name}
             />
             <img
               className="level-item"
-              src={`images/armor/${armor.name}.png`}
+              src={`${config.base}/images/armor/${armor.name}.png`}
               title={armor.name + " Armor"}
               alt={armor.name + " Armor"}
             />
             <img
               className="level-item"
-              src={`images/weapon/${main_hand.name}.png`}
+              src={`${config.base}/images/weapon/${main_hand.name}.png`}
               title={`Main hand: ${main_hand.name}`}
               alt={main_hand.name}
             />
             {off_hand.name !== "Empty" && (
               <img
                 className="level-item"
-                src={`images/weapon/${off_hand.name}.png`}
+                src={`${config.base}/images/weapon/${off_hand.name}.png`}
                 title={`Off hand: ${off_hand.name}`}
                 alt={off_hand.name}
               />
