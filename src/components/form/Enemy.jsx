@@ -1,9 +1,9 @@
 import React from "react";
 import Input from "./Input";
 
-function Enemy({ index, enemy, error, onChange }) {
+function Enemy({ index, enemy, error, onChange, onRemove }) {
   return (
-    <div className="columns">
+    <div className="box columns is-vcentered">
       <div className="column">
         <Input
           type="text"
@@ -50,6 +50,20 @@ function Enemy({ index, enemy, error, onChange }) {
           }}
           error={error && error.hp}
         />
+      </div>
+      <div className="column">
+        {index > 0 && (
+          <button
+            type="button"
+            className="button is-danger"
+            onClick={() => {
+              console.log("Going to call remove for index", index);
+              onRemove(index);
+            }}
+          >
+            Remove
+          </button>
+        )}
       </div>
     </div>
   );

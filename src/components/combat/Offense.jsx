@@ -3,8 +3,8 @@ import OffenseToon from "./OffenseToon";
 import config from "../../config";
 import http from "../../services/httpService";
 
-function Offense({ toons, fight, myToons }) {
-  toons = toons || [];
+function Offense({ fight, myToons }) {
+  const toons = fight.toonObjects || [];
 
   const handleSubmit = async (data) => {
     let url = config.api + "fights/" + fight._id + "/offense/";
@@ -34,6 +34,7 @@ function Offense({ toons, fight, myToons }) {
       {myToons.map((toon) => {
         return (
           <OffenseToon
+            key={toon._id}
             toons={toons}
             myToon={toon}
             enemies={fight && fight.enemies}

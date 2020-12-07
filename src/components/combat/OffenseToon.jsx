@@ -14,24 +14,26 @@ class OffenseToon extends Component {
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.submitting) {
-      this.setState({ submitting: !this.props.myToon.action });
+    if (prevState.submitting && this.props.myToon.action) {
+      this.setState({
+        submitting: !this.props.myToon.action,
+      });
     }
   }
 
-  handleActionChange = ({ currentTarget: sel }) => {
+  handleActionChange = (name, value) => {
     const state = {
-      action: sel.value,
+      action: value,
       target: [],
       roll: 0,
       modifier: "",
     };
-    switch (sel.value) {
+    switch (value) {
       case "Attack":
       case "Heal":
+      case "Precise Attack":
         state.isValid = false;
         break;
-      case "Precise Attack":
       case "Pass":
       default:
         state.isValid = true;
@@ -55,6 +57,11 @@ class OffenseToon extends Component {
         });
         break;
       case "Precise Attack":
+        this.setState({
+          target: value,
+          isValid: value && value.length && this.state.modifier,
+        });
+        break;
       case "Pass":
       default:
         this.setState({ target: value, isValid: true });
@@ -86,10 +93,22 @@ class OffenseToon extends Component {
   };
 
   handleModifierChange = (name, value) => {
-    this.setState({
-      modifier: value,
-      isValid: this.state.roll && this.state.target && this.state.target.length,
-    });
+    switch (this.state.action) {
+      case "Attack":
+      case "Heal":
+        this.setState({
+          modifier: value,
+          isValid:
+            this.state.roll && this.state.target && this.state.target.length,
+        });
+        break;
+      case "Precise Attack":
+      default:
+        this.setState({
+          modifier: value,
+          isValid: this.state.target && this.state.target.length,
+        });
+    }
   };
 
   renderHeal = () => {
@@ -114,23 +133,35 @@ class OffenseToon extends Component {
     );
   };
 
+  renderEnemyTargetSelect = (enemies) => {
+    return (
+      <MultiSelect
+        name="targets"
+        value={this.state.target}
+        list={enemies}
+        options={{ label: this.state.action }}
+        onChange={this.handleTargetChange}
+        constraint={(enemy) => {
+          return enemy.current_hp > 0;
+        }}
+        constraintMessage={(enemy) => {
+          return enemy.current_hp > 0 ? null : enemy.name + "'s dead!";
+        }}
+      />
+    );
+  };
+
   renderAttack = () => {
     const { enemies } = this.props;
     return (
       <React.Fragment>
-        <MultiSelect
-          name="targets"
-          value={this.state.target}
-          list={enemies}
-          options={{ label: "Attack:" }}
-          onChange={this.handleTargetChange}
-        />
+        {this.renderEnemyTargetSelect(enemies)}
         <Select
           name="modifier"
           value={this.state.modifier}
           list={[
-            { id: "Smashing", name: "Smashing" },
-            { id: "Entropy", name: "Entropy" },
+            { _id: "Smashing", name: "Smashing" },
+            { _id: "Entropy", name: "Entropy" },
           ]}
           options={{ label: "With:" }}
           onChange={this.handleModifierChange}
@@ -141,6 +172,25 @@ class OffenseToon extends Component {
           value={this.state.roll}
           onChange={this.handleRollChange}
           error={null}
+        />
+      </React.Fragment>
+    );
+  };
+
+  renderPreciseAttack = () => {
+    const { enemies } = this.props;
+    return (
+      <React.Fragment>
+        {this.renderEnemyTargetSelect(enemies)}
+        <Select
+          name="modifier"
+          value={this.state.modifier}
+          list={[
+            { _id: "Smashing", name: "Smashing" },
+            { _id: "Entropy", name: "Entropy" },
+          ]}
+          options={{ label: "With:" }}
+          onChange={this.handleModifierChange}
         />
       </React.Fragment>
     );
@@ -181,38 +231,42 @@ class OffenseToon extends Component {
 
   render() {
     const { myToon, onSubmit } = this.props;
+    const done = myToon && myToon.action;
     return (
       <div className="box">
         <h3 className="title is-3">{`${myToon.name}'s action`}</h3>
-        <div className="field">
-          <label className="label">Action</label>
-          <div className="control">
-            <div className="select">
-              <select
-                onChange={this.handleActionChange}
-                value={this.state.action}
-                disabled={myToon && myToon.action}
-              >
-                <option value="" disabled={true}>
-                  Pick one...
-                </option>
-                <option value="Attack">Attack</option>
-                <option value="Precise Attack">Precise Attack</option>
-                <option value="Heal">Healing</option>
-                <option value="Pass">Pass</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        {this.state.action === "Attack" && this.renderAttack()}
-        {this.state.action === "Heal" && this.renderHeal()}
+        <Select
+          name="action"
+          value={this.state.action}
+          list={[
+            { _id: "Attack", name: "Attack" },
+            { _id: "Precise Attack", name: "Precise Attack" },
+            { _id: "Heal", name: "Heal" },
+            { _id: "Pass", name: "Pass" },
+          ]}
+          onChange={this.handleActionChange}
+          disabled={done}
+          constraint={(o) => {
+            if (myToon.quickAction === "Harry")
+              return o.name === "Precise Attack";
+            else return true;
+          }}
+          constraintMessage={(o) => {
+            return "Only wit-based attacks allowed when harrying";
+          }}
+        />
+        {!done && this.state.action === "Attack" && this.renderAttack()}
+        {!done &&
+          this.state.action === "Precise Attack" &&
+          this.renderPreciseAttack()}
+        {!done && this.state.action === "Heal" && this.renderHeal()}
 
         <button
           type="button"
           className={`button is-primary ${
             this.state.submitting ? "is-loading" : ""
           }`}
-          disabled={!this.state.isValid || myToon.action}
+          disabled={!this.state.isValid || done}
           onClick={() => {
             onSubmit(this.handleSubmit());
           }}

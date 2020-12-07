@@ -24,6 +24,7 @@ class Navbar extends Component {
           toons={this.props.toons}
           fights={this.props.fights}
           isOpen={this.state.burgerIsOpen}
+          onToggle={this.handleToggle}
         />
       </nav>
     );

@@ -42,8 +42,8 @@ class FightCreator extends Form {
               "Can only contain letters, digits or the characters -_' and must be 3 to 50 characters long"
             )
             .required(),
-          dc: yup.number().positive().integer().required(),
-          ab: yup.number().positive().integer().required(),
+          dc: yup.number().integer().required(),
+          ab: yup.number().integer().required(),
           hp: yup.number().positive().integer().required(),
         })
       )

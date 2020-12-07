@@ -21,7 +21,13 @@ function Enemies({ enemies, onChange, errors }) {
 
   const addEnemy = () => {
     const clone = [...enemies];
-    clone.push({ name: "", dc: 0, ab: 0, hp: 0 });
+    clone.push({ name: "", dc: 0, ab: 0, hp: 1 });
+    onChange("enemies", clone);
+  };
+
+  const removeEnemy = (index) => {
+    const clone = [...enemies];
+    clone.splice(index, 1);
     onChange("enemies", clone);
   };
 
@@ -36,6 +42,7 @@ function Enemies({ enemies, onChange, errors }) {
             enemy={enemy}
             error={error}
             onChange={handleChange}
+            onRemove={removeEnemy}
           />
         );
       })}

@@ -7,10 +7,19 @@ import http from "../services/httpService";
 import config from "../config";
 import { toast } from "react-toastify";
 
-function FightCombat({ stream, match, fights, toons: propToons, user }) {
+function FightCombat({
+  stream,
+  match,
+  fights,
+  toons: allToons,
+  user,
+  history,
+}) {
   const [advancing, setAdvancing] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [listening, setListening] = useState(false);
   const fight = fights.find((f) => f._id === match.params.id) || {};
+  // console.log(fight);
 
   useEffect(() => {
     if (!listening && stream) {
@@ -42,10 +51,41 @@ function FightCombat({ stream, match, fights, toons: propToons, user }) {
     }
   };
 
+  const deleteFight = async () => {
+    if (window.confirm("Delete this fight?")) {
+      setDeleting(true);
+      const fight = fights.find((f) => f._id === match.params.id) || {};
+      try {
+        const response = await http.post(
+          config.api + `fights/${fight._id}/delete`
+        );
+        history.replace("/");
+      } catch (e) {
+        toast.error("Oh noes! Can't delete the fight! Bug Mel on Discord!");
+        console.error("Unexpected error while deleting fight:", e);
+      }
+    } else {
+      console.log("do nothing");
+    }
+  };
+
   const { toons: fightToonIds, enemies, round, phase, name } = fight;
   let toons = [];
   let toonIds = fightToonIds || [];
-  if (propToons) toons = propToons.filter((t) => toonIds.includes(t._id));
+  if (allToons) toons = allToons.filter((t) => toonIds.includes(t._id));
+  fight.toonObjects = toons;
+  if (fight && fight.attacks) {
+    for (const attack of fight.attacks) {
+      const toon = toons.find((t) => {
+        return t._id === attack.to;
+      });
+      const enemy = enemies.find((e) => {
+        return e._id === attack.from;
+      });
+      attack.toon = toon;
+      attack.enemy = enemy;
+    }
+  }
 
   return (
     <React.Fragment>
@@ -54,18 +94,14 @@ function FightCombat({ stream, match, fights, toons: propToons, user }) {
         round={round}
         phase={phase}
         user={user}
-        onClick={advanceFight}
+        onAdvance={advanceFight}
+        onDelete={deleteFight}
         advancing={advancing}
+        deleting={deleting}
       />
-      <StatusPane
-        toons={toons}
-        phase={phase}
-        enemies={enemies}
-        fight={fight}
-        user={user}
-      />
-      <ActionBlock phase={phase} toons={toons} user={user} fight={fight} />
-      <CombatLog stream={stream} />
+      <StatusPane fight={fight} user={user} />
+      {<ActionBlock user={user} fight={fight} />}
+      {<CombatLog stream={stream} />}
     </React.Fragment>
   );
 }

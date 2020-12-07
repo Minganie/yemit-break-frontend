@@ -1,10 +1,15 @@
 import React from "react";
 import Statuses from "./Statuses";
 
-function ToonLine({ toon, phase, toons }) {
+function ToonLine({ toon, phase, toons, attacks }) {
   const { armor, main_hand, off_hand, trait } = toon;
   const hp = 40 + armor.hp + main_hand.hp + off_hand.hp + trait.hp;
   let ready = false;
+  const myAttacks = attacks
+    ? attacks.filter((a) => {
+        return a.to === toon._id;
+      })
+    : null;
   switch (phase) {
     case "Support":
       ready = toon.quickAction !== null;
@@ -13,7 +18,7 @@ function ToonLine({ toon, phase, toons }) {
       ready = toon.action !== null;
       break;
     case "Defense":
-      ready = false;
+      ready = myAttacks === null || myAttacks.length === 0;
   }
   const drawReadySign = (ready) => {
     if (ready)
@@ -35,7 +40,7 @@ function ToonLine({ toon, phase, toons }) {
       <div className="column is-8 py-0">{toon.name}</div>
       <div className="column is-2 py-0">{`${toon.current_hp}/${hp}`}</div>
       <div className="column is-10 is-offset-2 py-0">
-        <Statuses toons={toons} statuses={toon.statuses} />
+        <Statuses toons={toons} statuses={toon.statuses} attacks={myAttacks} />
       </div>
     </div>
   );

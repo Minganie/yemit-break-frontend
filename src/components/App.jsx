@@ -15,22 +15,21 @@ import ToonEditor from "./ToonEditor";
 import ToonLister from "./ToonLister";
 import config from "../config";
 import http from "../services/httpService";
-import Dictionary from "../Dictionary";
 
 class App extends Component {
   state = {
     stream: null,
     user: null,
-    allToons: new Dictionary([]),
+    allToons: [],
     myToons: [],
-    fights: new Dictionary([]),
+    fights: [],
   };
 
   async componentDidMount() {
     const state = {};
     state.user = auth.getCurrentUser();
-    state.fights = new Dictionary(await http.get(config.api + "fights"));
-    state.allToons = new Dictionary(await http.get(config.api + "toons"));
+    state.fights = await http.get(config.api + "fights");
+    state.allToons = await http.get(config.api + "toons");
     if (state.user) {
       const myToons = await http.get(config.api + "users/me/toons");
       state.myToons = myToons.map((t) => {
@@ -44,22 +43,37 @@ class App extends Component {
     state.stream.addEventListener("fight-created", (e) => {
       try {
         const { fight } = JSON.parse(e.data);
-        const fights = this.state.fights.clone();
-        fights.upsert(fight);
+        const fights = [...this.state.fights, fight];
         this.setState({ fights });
         toast.info("A DM just added a fight");
       } catch (e) {
         console.error("Unexpected error while parsing created fight data:", e);
       }
     });
+    state.stream.addEventListener("fight-delete", (e) => {
+      try {
+        const { fights } = JSON.parse(e.data);
+        this.setState({ fights });
+        toast.info("A DM just concluded a fight");
+      } catch (e) {
+        console.error("Unexpected error while parsing deleted fight data:", e);
+      }
+    });
     state.stream.addEventListener("fight-advance", (e) => {
+      console.log("Got a fight-advance event");
       try {
         const { fight, toons } = JSON.parse(e.data);
-        const fights = this.state.fights.clone();
-        fights.upsert(fight);
-        const allToons = this.state.allToons.clone();
+        const fights = [...this.state.fights];
+        const i = fights.findIndex((f) => {
+          return f._id === fight._id;
+        });
+        fights[i] = fight;
+        const allToons = [...this.state.allToons];
         for (const toon of toons) {
-          allToons.upsert(toon);
+          const i = allToons.findIndex((t) => {
+            return t._id === toon._id;
+          });
+          allToons[i] = toon;
         }
         this.setState({ fights, allToons });
       } catch (e) {
@@ -70,17 +84,24 @@ class App extends Component {
       }
     });
     state.stream.addEventListener("action-taken", (e) => {
+      console.log("Got an action-taken event");
       try {
         const action = JSON.parse(e.data);
-        const allToons = this.state.allToons.clone();
-        const fights = this.state.fights.clone();
+        const allToons = [...this.state.allToons];
+        const fights = [...this.state.fights];
         if (action.toons) {
           for (const toon of action.toons) {
-            allToons.upsert(toon);
+            const i = allToons.findIndex((t) => {
+              return t._id === toon._id;
+            });
+            allToons[i] = toon;
           }
         }
         if (action.fight) {
-          fights.upsert(action.fight);
+          const i = fights.findIndex((f) => {
+            return f._id === action.fight._id;
+          });
+          fights[i] = action.fight;
         }
         this.setState({ allToons, fights });
       } catch (e) {
@@ -88,17 +109,48 @@ class App extends Component {
       }
     });
     state.stream.addEventListener("mob-acted", (e) => {
-      console.log("A mob acted");
+      console.log("Got a mob-acted event");
       try {
         const action = JSON.parse(e.data);
-        console.log(action);
-        const fights = this.state.fights.clone();
+        const fights = [...this.state.fights];
         if (action.fight) {
-          fights.upsert(action.fight);
+          const i = fights.findIndex((f) => {
+            return f._id === action.fight._id;
+          });
+          fights[i] = action.fight;
         }
         this.setState({ fights });
       } catch (e) {
         console.error("Unexpected error while parsing mob action data:", e);
+      }
+    });
+    state.stream.addEventListener("toon-created", (e) => {
+      console.log("Got a toon-created event");
+      try {
+        const { toon } = JSON.parse(e.data);
+        const stateSplice = {};
+        stateSplice.allToons = [...this.state.allToons, toon];
+        if (this.state.user) {
+          if (toon.user === this.state.user._id)
+            stateSplice.myToons = [...this.state.myToons, toon._id];
+        }
+        this.setState(stateSplice);
+      } catch (e) {
+        console.error("Unexpected error while parsing toon created data:", e);
+      }
+    });
+    state.stream.addEventListener("toon-updated", (e) => {
+      console.log("Got a toon-updated event");
+      try {
+        const { toon } = JSON.parse(e.data);
+        const allToons = [...this.state.allToons];
+        const i = allToons.findIndex((t) => {
+          return t._id === toon._id;
+        });
+        allToons[i] = toon;
+        this.setState({ allToons });
+      } catch (e) {
+        console.error("Unexpected error while parsing toon updated data:", e);
       }
     });
     this.setState(state);
@@ -114,21 +166,19 @@ class App extends Component {
         <ToastContainer />
         <Navbar
           user={this.state.user}
-          fights={this.state.fights.values()}
+          fights={this.state.fights}
           toons={this.state.allToons.filter((toon) => {
             return this.state.myToons.includes(toon._id);
           })}
           stream={this.state.stream}
         />
-        <div className="container">
+        <div className="main container">
           <Switch>
             <Route path="/my-toon/:id?" component={ToonEditor} />
             <Route
               path="/all-toons"
               render={(props) => {
-                return (
-                  <ToonLister toons={this.state.allToons.values()} {...props} />
-                );
+                return <ToonLister toons={this.state.allToons} {...props} />;
               }}
             />
             <Route
@@ -137,8 +187,8 @@ class App extends Component {
                 return (
                   <FightCombat
                     user={this.state.user}
-                    fights={this.state.fights.values()}
-                    toons={this.state.allToons.values()}
+                    fights={this.state.fights}
+                    toons={this.state.allToons}
                     stream={this.state.stream}
                     {...props}
                   />
@@ -148,12 +198,7 @@ class App extends Component {
             <Route
               path="/fight"
               render={(props) => {
-                return (
-                  <FightCreator
-                    toons={this.state.allToons.values()}
-                    {...props}
-                  />
-                );
+                return <FightCreator toons={this.state.allToons} {...props} />;
               }}
             />
             <Route path="/register" component={Register} />

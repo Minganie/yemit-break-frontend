@@ -1,16 +1,10 @@
 import React from "react";
 import EnemyLine from "./EnemyLine";
 
-function EnemyList({ enemies, phase, toons, attacks, user }) {
+function EnemyList({ enemies, phase, attacks, user }) {
   enemies = enemies || [];
-  attacks = attacks ? [...attacks] : [];
-  toons = toons || [];
-  for (const attack of attacks) {
-    const toon = toons.find((t) => {
-      return (t._id = attack.to);
-    });
-    attack.to = toon.name;
-  }
+  attacks = attacks || [];
+
   return (
     <React.Fragment>
       <h3 className="title is-3">Them</h3>

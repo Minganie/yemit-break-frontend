@@ -1,27 +1,44 @@
 import React from "react";
 
-function TitleBlock(props) {
+function TitleBlock({
+  name,
+  round,
+  phase,
+  user,
+  onAdvance,
+  advancing,
+  onDelete,
+  deleting,
+}) {
   return (
     <div className="columns mt-1">
       <div className="column is-three-quarters">
-        <h1 className="title is-1">{props.name}</h1>
-        <h2 className="title">{`Round ${props.round} - ${props.phase}`}</h2>
+        <h1 className="title is-1">{name}</h1>
+        <h2 className="title">{`Round ${round} - ${phase}`}</h2>
       </div>
       <div className="column">
-        {props.user &&
-          props.user.permissions &&
-          props.user.permissions.includes("DM") && (
-            <button
-              type="button"
-              onClick={props.onClick}
-              className={`button is-danger ${
-                props.advancing ? "is-loading" : ""
-              }`}
-              disabled={props.advancing}
-            >
-              Next phase
-            </button>
-          )}
+        {user && user.permissions && user.permissions.includes("DM") && (
+          <button
+            type="button"
+            onClick={onAdvance}
+            className={`button is-warning ${advancing ? "is-loading" : ""}`}
+            disabled={advancing}
+          >
+            Next phase
+          </button>
+        )}
+      </div>
+      <div className="column">
+        {user && user.permissions && user.permissions.includes("DM") && (
+          <button
+            type="button"
+            onClick={onDelete}
+            className={`button is-danger ${deleting ? "is-loading" : ""}`}
+            disabled={deleting}
+          >
+            Delete
+          </button>
+        )}
       </div>
     </div>
   );

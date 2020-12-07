@@ -1,5 +1,5 @@
 const prod = {
-  api: "api/",
+  api: "https://yemit-break.com/api/",
 };
 const dev = {
   api: "https://localhost:3443/api/",

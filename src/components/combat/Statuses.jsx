@@ -1,6 +1,6 @@
 import React from "react";
 
-function Statuses({ toons, statuses }) {
+function Statuses({ toons, statuses, attacks }) {
   const renders = [];
   if (statuses && statuses.is_covering) {
     const target = toons.find((t) => t._id === statuses.covering);
@@ -49,6 +49,13 @@ function Statuses({ toons, statuses }) {
   }
   if (statuses && statuses.is_parrying) {
     renders.push(<p key={renders.length + 1}>Parrying</p>);
+  }
+  if (attacks && attacks.length > 0) {
+    for (let attack of attacks) {
+      renders.push(
+        <p key={renders.length + 1}>{`Attacked by ${attack.enemy.name}`}</p>
+      );
+    }
   }
   return (
     <div className="has-text-info">

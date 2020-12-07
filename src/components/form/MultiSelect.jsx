@@ -1,6 +1,18 @@
 import React from "react";
 
-function MultiSelect({ name, value, list, options, onChange }) {
+function MultiSelect({
+  name,
+  value,
+  list,
+  options,
+  onChange,
+  constraint = (o) => {
+    return true;
+  },
+  constraintMessage = (o) => {
+    return null;
+  },
+}) {
   options = options || {};
 
   const handleChange = ({ currentTarget: sel }) => {
@@ -26,7 +38,12 @@ function MultiSelect({ name, value, list, options, onChange }) {
           >
             {list.map((option) => {
               return (
-                <option key={option._id} value={option._id}>
+                <option
+                  key={option._id}
+                  value={option._id}
+                  disabled={!constraint(option)}
+                  title={constraintMessage(option)}
+                >
                   {option.name}
                 </option>
               );

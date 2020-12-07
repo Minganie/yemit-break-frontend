@@ -10,7 +10,7 @@ class SupportToon extends Component {
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.submitting) {
+    if (prevState.submitting && this.props.myToon.quickAction) {
       this.setState({ submitting: !this.props.myToon.quickAction });
     }
   }
@@ -72,9 +72,17 @@ class SupportToon extends Component {
             <option value="" disabled={true}>
               Pick one...
             </option>
-            {toons.map((toon) => {
-              return <option value={toon._id}>{toon.name}</option>;
-            })}
+            {toons
+              .filter((t) => {
+                return t._id !== myToon._id;
+              })
+              .map((toon) => {
+                return (
+                  <option key={toon._id} value={toon._id}>
+                    {toon.name}
+                  </option>
+                );
+              })}
           </select>
         </div>
       </div>
@@ -189,6 +197,7 @@ class SupportToon extends Component {
 
   render() {
     const { myToon, onSubmit } = this.props;
+    const done = myToon && myToon.quickAction;
     return (
       <div className="box">
         <h3 className="title is-3">{`${myToon.name}'s quick action`}</h3>
@@ -199,7 +208,7 @@ class SupportToon extends Component {
               <select
                 onChange={this.handleActionChange}
                 value={this.state.quickAction}
-                disabled={myToon && myToon.quickAction}
+                disabled={done}
               >
                 <option value="" disabled={true}>
                   Pick one...
@@ -214,18 +223,21 @@ class SupportToon extends Component {
             </div>
           </div>
         </div>
-        {this.state.quickAction === "Cover" && this.renderWithToons("Cover")}
-        {this.state.quickAction === "Inspire" && this.renderInspire()}
-        {this.state.quickAction === "Guard" &&
+        {!done &&
+          this.state.quickAction === "Cover" &&
+          this.renderWithToons("Cover")}
+        {!done && this.state.quickAction === "Inspire" && this.renderInspire()}
+        {!done &&
+          this.state.quickAction === "Guard" &&
           this.renderWithToons("Inspire Guard")}
-        {this.state.quickAction === "Harry" && this.renderHarry()}
+        {!done && this.state.quickAction === "Harry" && this.renderHarry()}
 
         <button
           type="button"
           className={`button is-primary ${
             this.state.submitting ? "is-loading" : ""
           }`}
-          disabled={!this.state.isValid || myToon.quickAction}
+          disabled={!this.state.isValid || done}
           onClick={() => {
             onSubmit(this.handleSubmit());
           }}

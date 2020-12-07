@@ -30,6 +30,12 @@ class Input extends Component {
           <i className="fas fa-dice-two" />
         </span>
       );
+    if (this.props.name === "buster")
+      return (
+        <span className="icon is-small is-left">
+          <i className="fas fa-hammer" />
+        </span>
+      );
     return null;
   }
 

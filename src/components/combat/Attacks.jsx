@@ -7,7 +7,7 @@ function Attacks({ attacks }) {
         return (
           <p
             key={attack._id}
-          >{`[${attack.roll}+${attack.bonus}] to ${attack.to}`}</p>
+          >{`[${attack.roll}+${attack.bonus}] to ${attack.toon.name}`}</p>
         );
       })}
     </React.Fragment>

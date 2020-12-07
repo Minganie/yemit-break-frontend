@@ -32,7 +32,7 @@ function Select({
             }}
             disabled={disabled}
           >
-            <option value="" disabled={true}>
+            <option key="-1" value="" disabled={true}>
               Pick one...
             </option>
             {list.map((option) => {

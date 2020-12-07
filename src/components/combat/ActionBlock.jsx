@@ -1,19 +1,20 @@
 import React from "react";
 import Support from "./Support";
 import Offense from "./Offense";
+import Defense from "./Defense";
 
-function ActionBlock({ phase, toons, user, fight }) {
-  const myToons = (toons || []).filter((toon) => {
-    return toon.user === user._id;
+function ActionBlock({ user, fight }) {
+  const myToons = (fight.toonObjects || []).filter((toon) => {
+    return user ? toon.user === user._id : false;
   });
-  switch (phase) {
+  switch (fight.phase) {
     case "Support":
-      return <Support toons={toons} myToons={myToons} fight={fight} />;
+      return <Support myToons={myToons} fight={fight} />;
     case "Action":
-      return <Offense toons={toons} myToons={myToons} fight={fight} />;
+      return <Offense myToons={myToons} fight={fight} />;
     case "Defense":
     default:
-      return <div>Here there be defenses</div>;
+      return <Defense user={user} myToons={myToons} fight={fight} />;
   }
 }
 

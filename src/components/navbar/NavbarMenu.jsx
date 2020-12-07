@@ -2,11 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import NavbarDropdown from "./NavbarDropdown";
 
-function NavbarMenu({ user, toons, fights, isOpen }) {
+function NavbarMenu({ user, toons, fights, isOpen, onToggle }) {
   return (
     <div className={`navbar-menu ${isOpen ? "is-active" : ""}`} id="navbarMenu">
       <div className="navbar-start">
-        <Link className="navbar-item" to="/all-toons">
+        <Link className="navbar-item" to="/all-toons" onClick={onToggle}>
           All The Toons
         </Link>
         {user && (
@@ -15,6 +15,7 @@ function NavbarMenu({ user, toons, fights, isOpen }) {
             label="Toons"
             link="/my-toon"
             list={toons}
+            onClick={onToggle}
           />
         )}
         <NavbarDropdown
@@ -22,23 +23,32 @@ function NavbarMenu({ user, toons, fights, isOpen }) {
           label="Fights"
           link="/fight"
           list={fights}
+          onClick={onToggle}
         />
       </div>
       <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
             {!user && (
-              <Link className="button is-light" to="/login">
+              <Link className="button is-light" to="/login" onClick={onToggle}>
                 Login
               </Link>
             )}
             {!user && (
-              <Link className="button is-primary" to="/register">
+              <Link
+                className="button is-primary"
+                to="/register"
+                onClick={onToggle}
+              >
                 Register
               </Link>
             )}
             {user && (
-              <Link className="button is-primary" to="/logout">
+              <Link
+                className="button is-primary"
+                to="/logout"
+                onClick={onToggle}
+              >
                 Logout
               </Link>
             )}

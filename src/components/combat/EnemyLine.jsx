@@ -17,12 +17,24 @@ function EnemyLine({ enemy, phase, attacks, isDm }) {
         </span>
       );
   };
+
+  const drawDeadSign = (enemy) => {
+    if (enemy.current_hp > 0) return null;
+    else
+      return (
+        <span className="icon is-small is-left" style={{ color: "black" }}>
+          <i className="fas fa-skull-crossbones"></i>
+        </span>
+      );
+  };
+
   return (
     <div className="columns is-multiline my-3">
       <div className="column is-2 py-0">
         {drawReadySign(phase === "Defense" ? enemy.action : true)}
       </div>
-      <div className="column is-8 py-0">{enemy.name}</div>
+      <div className="column is-7 py-0">{enemy.name}</div>
+      <div className="column is-1 py-0">{drawDeadSign(enemy)}</div>
       {isDm && (
         <div className="column is-2 py-0">{`${enemy.current_hp}/${enemy.hp}`}</div>
       )}

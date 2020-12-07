@@ -3,8 +3,8 @@ import SupportToon from "./SupportToon";
 import config from "../../config";
 import http from "../../services/httpService";
 
-function Support({ toons, fight, myToons }) {
-  toons = toons || [];
+function Support({ fight, myToons }) {
+  const toons = fight.toonObjects || [];
 
   const handleSubmit = async (data) => {
     let url = config.api + "fights/" + fight._id + "/support/";
@@ -40,7 +40,12 @@ function Support({ toons, fight, myToons }) {
     <React.Fragment>
       {myToons.map((toon) => {
         return (
-          <SupportToon toons={toons} myToon={toon} onSubmit={handleSubmit} />
+          <SupportToon
+            key={toon._id}
+            toons={toons}
+            myToon={toon}
+            onSubmit={handleSubmit}
+          />
         );
       })}
     </React.Fragment>
