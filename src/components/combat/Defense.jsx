@@ -1,5 +1,5 @@
 import React from "react";
-import Dodger from "./Dodger";
+import DefenseToon from "./DefenseToon";
 import DefenseEnemy from "./DefenseEnemy";
 import config from "../../config";
 import http from "../../services/httpService";
@@ -42,7 +42,11 @@ function Defense({ fight, myToons, user }) {
     <React.Fragment>
       {myAttacks.map((attack) => {
         return (
-          <Dodger key={attack._id} attack={attack} onSubmit={handleSubmit} />
+          <DefenseToon
+            key={attack._id}
+            attack={attack}
+            onSubmit={handleSubmit}
+          />
         );
       })}
       {isADm &&

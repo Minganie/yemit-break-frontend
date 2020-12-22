@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { toast } from "react-toastify";
+import Select from "../form/Select";
 
 class SupportToon extends Component {
   state = {
@@ -15,13 +17,13 @@ class SupportToon extends Component {
     }
   }
 
-  handleActionChange = ({ currentTarget: sel }) => {
+  handleActionChange = (name, value) => {
     const state = {
-      quickAction: sel.value,
+      quickAction: value,
       target: "",
       modifier: "",
     };
-    switch (sel.value) {
+    switch (value) {
       case "Cover":
       case "Inspire":
       case "Guard":
@@ -48,14 +50,14 @@ class SupportToon extends Component {
     }
   };
 
-  handleModifierChange = ({ currentTarget: sel }) => {
+  handleModifierChange = (name, value) => {
     switch (this.state.quickAction) {
       case "Inspire":
-        this.setState({ modifier: sel.value, isValid: this.state.target });
+        this.setState({ modifier: value, isValid: this.state.target });
         break;
       case "Harry":
       default:
-        this.setState({ modifier: sel.value, isValid: true });
+        this.setState({ modifier: value, isValid: true });
     }
   };
 
@@ -100,55 +102,42 @@ class SupportToon extends Component {
 
   renderInspire = () => {
     const { myToon } = this.props;
+    const list = [
+      { _id: "Attack", name: "Attack" },
+      { _id: "Heal", name: "Heal" },
+    ];
     return (
       <React.Fragment>
         <div className="field">
           <label className="label">Inspire:</label>
           {this.renderToonSelect()}
         </div>
-        <div className="field">
-          <label className="label">To:</label>
-          <div className="control">
-            <div className="select">
-              <select
-                value={this.state.modifier}
-                onChange={this.handleModifierChange}
-                disabled={myToon && myToon.quickAction}
-              >
-                <option value="" disabled={true}>
-                  Pick one...
-                </option>
-                <option>Attack</option>
-                <option>Heal</option>
-              </select>
-            </div>
-          </div>
-        </div>
+
+        <Select
+          name="to"
+          value={this.state.modifier}
+          list={list}
+          onChange={this.handleModifierChange}
+          disabled={myToon && myToon.quickAction}
+        />
       </React.Fragment>
     );
   };
 
   renderHarry = () => {
     const { myToon } = this.props;
+    const list = [
+      { _id: "Smashing", name: "Smashing" },
+      { _id: "Entropy", name: "Entropy" },
+    ];
     return (
-      <div className="field">
-        <label className="label">With:</label>
-        <div className="control">
-          <div className="select">
-            <select
-              value={this.state.modifier}
-              onChange={this.handleModifierChange}
-              disabled={myToon && myToon.quickAction}
-            >
-              <option value="" disabled={true}>
-                Pick one...
-              </option>
-              <option value="Smashing">Smashing</option>
-              <option value="Entropy">Entropy</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      <Select
+        name="with"
+        value={this.state.modifier}
+        list={list}
+        onChange={this.handleModifierChange}
+        disabled={myToon && myToon.quickAction}
+      />
     );
   };
 
@@ -195,34 +184,53 @@ class SupportToon extends Component {
     }
   };
 
+  doSubmit = async () => {
+    const { onSubmit } = this.props;
+    try {
+      await onSubmit(this.handleSubmit());
+    } catch (e) {
+      const { response } = e;
+      const { status, data } = response;
+      if (status === 400 && data.message.includes("cover")) {
+        toast.error(data.message);
+        this.setState({
+          quickAction: "",
+          isValid: false,
+          target: "",
+          modifier: "",
+          submitting: false,
+        });
+      } else {
+        console.error(
+          "Unexpected error while posting toon support",
+          e.response
+        );
+      }
+    }
+  };
+
   render() {
-    const { myToon, onSubmit } = this.props;
+    const { myToon } = this.props;
     const done = myToon && myToon.quickAction;
+    const quickActions = [
+      { _id: "Cover", name: "Cover" },
+      { _id: "Inspire", name: "Inspire Action" },
+      { _id: "Guard", name: "Inspire Guard" },
+      { _id: "Parry", name: "Parry" },
+      { _id: "Harry", name: "Harry" },
+      { _id: "Pass", name: "Pass" },
+    ];
     return (
       <div className="box">
         <h3 className="title is-3">{`${myToon.name}'s quick action`}</h3>
-        <div className="field">
-          <label className="label">Quick Action</label>
-          <div className="control">
-            <div className="select">
-              <select
-                onChange={this.handleActionChange}
-                value={this.state.quickAction}
-                disabled={done}
-              >
-                <option value="" disabled={true}>
-                  Pick one...
-                </option>
-                <option value="Cover">Cover</option>
-                <option value="Inspire">Inspire Action</option>
-                <option value="Guard">Inspire Guard</option>
-                <option value="Parry">Parry</option>
-                <option value="Harry">Harry</option>
-                <option value="Pass">Pass</option>
-              </select>
-            </div>
-          </div>
-        </div>
+        <Select
+          name="action"
+          value={this.state.quickAction}
+          list={quickActions}
+          options={{ label: "Quick Action" }}
+          onChange={this.handleActionChange}
+          disabled={done || myToon.current_hp < 0}
+        />
         {!done &&
           this.state.quickAction === "Cover" &&
           this.renderWithToons("Cover")}
@@ -238,9 +246,7 @@ class SupportToon extends Component {
             this.state.submitting ? "is-loading" : ""
           }`}
           disabled={!this.state.isValid || done}
-          onClick={() => {
-            onSubmit(this.handleSubmit());
-          }}
+          onClick={this.doSubmit}
         >
           Done
         </button>

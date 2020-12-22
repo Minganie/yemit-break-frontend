@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Input from "../form/Input";
 
-class Dodger extends Component {
+class DefenseToon extends Component {
   state = {
     roll: 0,
     submitting: false,
@@ -42,6 +42,7 @@ class Dodger extends Component {
           value={this.state.roll}
           onChange={this.handleRollChange}
           error={null}
+          disabled={attack.toon.current_hp < 0}
         />
         <button
           type="button"
@@ -60,4 +61,4 @@ class Dodger extends Component {
   }
 }
 
-export default Dodger;
+export default DefenseToon;

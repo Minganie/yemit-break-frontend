@@ -13,7 +13,11 @@ class CombatLog extends Component {
         ts: new Date(Date.now()),
         msg: action.msg,
       };
-      this.setState({ log: [line, ...this.state.log] });
+      const log = [line, ...this.state.log];
+      log.sortWithFunction((log1, log2) => {
+        return log1.ts < log2.ts;
+      }, "descending");
+      this.setState({ log });
       console.log("Combat log just received an update:", action);
     } catch (e) {
       console.error("Error trying to decode combat log data", e);

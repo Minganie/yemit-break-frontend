@@ -253,14 +253,18 @@ class OffenseToon extends Component {
             { _id: "Pass", name: "Pass" },
           ]}
           onChange={this.handleActionChange}
-          disabled={done}
+          disabled={done || myToon.current_hp < 0}
           constraint={(o) => {
-            if (myToon.quickAction === "Harry")
+            if (
+              myToon.quickAction === "Harry" ||
+              myToon.quickAction === "Parry" ||
+              myToon.quickAction === "Cover"
+            )
               return o.name === "Precise Attack";
             else return true;
           }}
           constraintMessage={(o) => {
-            return "Only wit-based attacks allowed when harrying";
+            return "Only wit-based attacks allowed when covering, parrying or harrying";
           }}
         />
         {!done && this.state.action === "Attack" && this.renderAttack()}

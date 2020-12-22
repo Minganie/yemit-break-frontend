@@ -4,7 +4,7 @@ const prod = {
 };
 const dev = {
   api: "https://localhost:3443/api/",
-  base: "https://localhost:3443/",
+  base: "http://localhost:3000/",
 };
 
 export default process.env.NODE_ENV === "development" ? dev : prod;

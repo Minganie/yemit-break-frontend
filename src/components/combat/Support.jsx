@@ -32,7 +32,7 @@ function Support({ fight, myToons }) {
     try {
       await http.post(url, data);
     } catch (e) {
-      console.error("Unexpected error while posting toon action:", e);
+      throw e;
     }
   };
 

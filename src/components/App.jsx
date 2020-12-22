@@ -52,8 +52,8 @@ class App extends Component {
     });
     state.stream.addEventListener("fight-delete", (e) => {
       try {
-        const { fights } = JSON.parse(e.data);
-        this.setState({ fights });
+        const { fights, toons } = JSON.parse(e.data);
+        this.setState({ fights, allToons: toons });
         toast.info("A DM just concluded a fight");
       } catch (e) {
         console.error("Unexpected error while parsing deleted fight data:", e);

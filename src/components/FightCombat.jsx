@@ -27,8 +27,12 @@ function FightCombat({
       stream.addEventListener("fight-advance", (e) => {
         try {
           const { fight: response } = JSON.parse(e.data);
-          if (fight._id === response._id)
+          if (fight._id === response._id) {
             toast.info(`Now on Round#${response.round} - ${response.phase}`);
+            const audio = new Audio(config.base + "bongos.ogg");
+            audio.type = "audio/ogg";
+            audio.play();
+          }
         } catch (e) {
           console.error(
             "Unexpected error while parsing advancing fight data:",

@@ -45,7 +45,7 @@ class Input extends Component {
   };
 
   render() {
-    let { type, name, value, onChange, options, error } = this.props;
+    let { type, name, value, onChange, options, error, disabled } = this.props;
     options = options || {};
     return (
       <div className="field">
@@ -64,6 +64,7 @@ class Input extends Component {
               onChange(me.name, me.value);
             }}
             placeholder={options.placeholder || ""}
+            disabled={!!disabled}
           />
           {this.renderIcons()}
         </div>

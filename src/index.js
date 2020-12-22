@@ -11,6 +11,29 @@ String.prototype.capitalize = function () {
   return this[0].toUpperCase() + this.slice(1);
 };
 
+Array.prototype.sortWithFunction = function (smallerThan, ascending) {
+  let needSwapping;
+  if (ascending && ascending === "ascending") {
+    needSwapping = (a, b) => {
+      return !smallerThan(a, b);
+    };
+  } else {
+    needSwapping = (a, b) => {
+      return smallerThan(a, b);
+    };
+  }
+  for (let i = 0; i < this.length - 1; i++) {
+    for (let j = 0; j < this.length - 1 - i; j++) {
+      if (needSwapping(this[j], this[j + 1])) {
+        const tmp = this[j];
+        this[j] = this[j + 1];
+        this[j + 1] = tmp;
+      }
+    }
+  }
+  return this;
+};
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
