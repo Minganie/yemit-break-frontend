@@ -11,6 +11,10 @@ class Navbar extends Component {
     this.setState({ burgerIsOpen: !this.state.burgerIsOpen });
   };
 
+  handleClick = (e) => {
+    this.setState({ burgerIsOpen: false });
+  };
+
   render() {
     return (
       <nav
@@ -24,7 +28,7 @@ class Navbar extends Component {
           toons={this.props.toons}
           fights={this.props.fights}
           isOpen={this.state.burgerIsOpen}
-          onToggle={this.handleToggle}
+          onToggle={this.handleClick}
         />
       </nav>
     );

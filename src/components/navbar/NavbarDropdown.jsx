@@ -14,7 +14,7 @@ function NavbarDropdown({ user, label, link, list, onClick }) {
   const allowCreate =
     user && user.permissions && user.permissions.includes(requiredPermissions);
   return (
-    <div className="navbar-item has-dropdown is-hoverable">
+    <div className={"navbar-item has-dropdown is-hoverable"}>
       <div className="navbar-link is-arrowless">{label}</div>
       <div className="navbar-dropdown">
         {allowCreate && (
