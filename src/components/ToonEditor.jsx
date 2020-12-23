@@ -62,32 +62,36 @@ class ToonEditor extends Form {
   ];
   races = [
     {
-      _id: "Miqo'te",
-      name: "Miqo'te",
+      _id: "Elezen",
+      name: "Elezen",
     },
     {
       _id: "Hyur",
       name: "Hyur",
     },
     {
-      _id: "Roegadyn",
-      name: "Roegadyn",
+      _id: "Miqo'te",
+      name: "Miqo'te",
     },
     {
-      _id: "Elezen",
-      name: "Elezen",
+      _id: "Lalafell",
+      name: "Lalafell",
+    },
+    {
+      _id: "Roegadyn",
+      name: "Roegadyn",
     },
     {
       _id: "Au Ra",
       name: "Au Ra",
     },
     {
-      _id: "Viera",
-      name: "Viera",
-    },
-    {
       _id: "Hrothgar",
       name: "Hrothgar",
+    },
+    {
+      _id: "Viera",
+      name: "Viera",
     },
   ];
 
